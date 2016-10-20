@@ -3,7 +3,6 @@ Launcher and patcher for Sim Theme Park!
 
 ***This readme is still a WIP!***
 
----
 
 ## About Golden Ticket
 
@@ -12,7 +11,6 @@ PC running Windows Vista or newer<sup>1</sup>. It does so by changing out files 
 which have been tested to work on a majority of systems with positive repeatable results. Some files are also added to
 make the game work \[better\], such as required fonts, cutscenes, and music.
 
----
 
 ## Contributing
 
@@ -25,8 +23,6 @@ If you would like to contribute and make modifications to the launcher, here are
 5. Push changes to the forked repo to the branch you made, **not "Master"!**
 6. Create a pull request with this repo, with a ***detailed*** description of what your changes are, and what they effect. ***If your pull request isn't easy to understand and detailed, it will not be merged.***
 
-
----
 
 ## [License](https://github.com/The-Buzzy-Project/Golden-Ticket/blob/master/LICENSE)
 
