@@ -28,12 +28,6 @@ If you would like to contribute and make modifications to the launcher, here are
 
 ---
 
-## Further questions
-
-[If you have further questions, please refer to the Golden Ticket wiki.](https://github.com/The-Buzzy-Project/Golden-Ticket/wiki)
-
----
-
 ## [License](https://github.com/The-Buzzy-Project/Golden-Ticket/blob/master/LICENSE)
 
 Currently, this repo (and all other repos from The Buzzy Project (TBP) along with it's included files are
