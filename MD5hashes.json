@@ -1,0 +1,9 @@
+{
+  "Vanilla-Executables": {
+    "tp10": "INSERT MD5 HERE",
+    "tp20": "INSERT MD5 HERE"
+  },
+  "Modified-Executables": {
+    "tp": "INSERT MD5 HERE"
+  }
+}
