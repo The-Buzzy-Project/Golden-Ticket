@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Golden_Ticket
 {
     // Let us access the Utility class
-    Utilities.Utility Util;
+    // Utilities.Utility Util;
 
     // This class is for verifying (and generating for specific circumstances) MD5 hashes!
     public class FileHash
