@@ -22,9 +22,10 @@ namespace Golden_Ticket
 {
     public partial class MainWindow : Form
     {
-        // Let us access the Utility class
-        Utilities.Utility Util;
-        
+        // Let us access the Startup class
+        Utilities.Startup startup;
+        Utilities.Updater updater;
+
         // DON'T TOUCH THIS, RYAN
         public MainWindow()
         {
@@ -64,7 +65,15 @@ namespace Golden_Ticket
              *
              */
 
-
+            // Check if in game directory
+            MainProgressbar.Value = 10;
+            startup.isInGameDirectory();
+            if(startup.inGameDirectory == true)
+            {
+                MainProgressbar.Value = 20;
+                // We are. Let's do an update check of the launcher!
+                updater.Check(startup.launcherIsDebugging, "launcherVersion");
+            }
 
         }
 
@@ -81,6 +90,11 @@ namespace Golden_Ticket
              * 
              * NOTE: Notify user on first launch about the security risk involved.
              */
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            //Utilities.Utility.updateCheck(true);
         }
     }
 }
