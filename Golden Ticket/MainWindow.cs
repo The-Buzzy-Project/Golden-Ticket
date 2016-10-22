@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Golden_Ticket
 {
@@ -62,6 +63,9 @@ namespace Golden_Ticket
              *                          check if game is patched, then patch version.
              *
              */
+
+
+
         }
 
         void FixGameDirectoryPermissions()
