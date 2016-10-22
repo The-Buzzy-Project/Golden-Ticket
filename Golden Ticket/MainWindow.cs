@@ -1,9 +1,9 @@
 ﻿#region License
 // ====================================================
-// file LICENSE, which is part of this source code package, for details.
-// and you are welcome to redistribute it under certain conditions; See
-// This program comes with ABSOLUTELY NO WARRANTY; This is free software,
 // Golden Ticket Copyright(C) 2016 The Buzzy Project
+// This program comes with ABSOLUTELY NO WARRANTY; This is free software,
+// and you are welcome to redistribute it under certain conditions; See
+// file LICENSE, which is part of this source code package, for details.
 // ====================================================
 #endregion
 
@@ -37,6 +37,15 @@ namespace Golden_Ticket
         // Program start
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            // Make MainPanel semi-transparent grey
+            MainPanel.BackColor = Color.FromArgb(125, 128, 128, 128);
+            // Do same to the buttons
+            PlayButton.BackColor = Color.FromArgb(150, 128, 128, 128);
+            OptionsButton.BackColor = Color.FromArgb(150, 128, 128, 128);
+
+            // Display launcher version in the title of the window
+            this.Text = Application.ProductName + " - " + Application.ProductVersion;
+
             /* THE BELOW STEPS OF THE LAUNCHER STARTING SHOULD BE IN ORDER OF WHICH THEY'RE TO BE EXECUTED!
              *
              * - Check if we're installed to the game directory
