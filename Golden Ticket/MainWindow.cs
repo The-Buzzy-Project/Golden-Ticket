@@ -22,10 +22,6 @@ namespace Golden_Ticket
 {
     public partial class MainWindow : Form
     {
-        // Let us access the Startup class
-        Utilities.Startup startup;
-        Utilities.Updater updater;
-
         // DON'T TOUCH THIS, RYAN
         public MainWindow()
         {
@@ -56,6 +52,9 @@ namespace Golden_Ticket
              *          
              * - Check launcher version from Github from the JSON file
              * 
+             * - Check if directory permissions are correct
+             *      - If they're not, restart as admin and fix it
+             * 
              * - Check if game is patched
              *      - If it is, check patch version from Github from the JSON file
              *          - If it's not, prompt user with a series of dialog boxes about patching the game
@@ -65,16 +64,7 @@ namespace Golden_Ticket
              *
              */
 
-            // Check if in game directory
-            MainProgressbar.Value = 10;
-            startup.isInGameDirectory();
-            if(startup.inGameDirectory == true)
-            {
-                MainProgressbar.Value = 20;
-                // We are. Let's do an update check of the launcher!
-                updater.Check(startup.launcherIsDebugging, "launcherVersion");
-            }
-
+            StartLauncher.RunWorkerAsync();
         }
 
         void FixGameDirectoryPermissions()
@@ -95,6 +85,33 @@ namespace Golden_Ticket
         private void PlayButton_Click(object sender, EventArgs e)
         {
             //Utilities.Utility.updateCheck(true);
+        }
+
+        private void StartLauncher_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Check if in game directory
+            Utilities.GameDirectory.isInGameDirectory();
+            StartLauncher.ReportProgress(15);
+            if (Utilities.GameDirectory.inGameDirectory == true)
+            {
+                // Change StatusLabel in a thread safe way to inform user of current operation...
+                StatusLabel.Invoke((MethodInvoker)delegate
+                {
+                    StatusLabel.Text = "Checking launcher version...";
+                });
+                StartLauncher.ReportProgress(25);
+                // We are. Let's do an update check of the launcher!
+                Utilities.Updater.Check(Utilities.GameDirectory.launcherIsDebugging, "launcherVersion");
+                StartLauncher.ReportProgress(50);
+                // Check if directory permissions allow us to modify as we please without administrator access
+                Utilities.GameDirectory.permissionsAreCorrect();
+                StartLauncher.ReportProgress(75);
+            }
+        }
+
+        private void StartLauncher_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            MainProgressbar.Value = e.ProgressPercentage;
         }
     }
 }
