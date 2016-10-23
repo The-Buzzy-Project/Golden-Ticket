@@ -44,10 +44,6 @@ namespace Golden_Ticket
             // Display launcher version in the title of the window
             this.Text = Application.ProductName + " - " + Application.ProductVersion;
 
-            // Are we running as administrator? If so, what's the reason? Is one even set?
-
-
-
             /* THE BELOW STEPS OF THE LAUNCHER STARTING SHOULD BE IN ORDER OF WHICH THEY'RE TO BE EXECUTED!
              *
              * - Check if we're installed to the game directory
@@ -145,7 +141,7 @@ namespace Golden_Ticket
                 else if(Utilities.GameDirectory.permsAreCorrect == false)
                 {
                     // Ask user if they want to fix the permissions
-                    DialogResult result = MessageBox.Show("This can be fixed by restarting the launcher as administrator and changing the permissions.", "Cannot modify game directory!", MessageBoxButtons.YesNo);
+                    DialogResult result = MessageBox.Show("This can be fixed by changing the permissions as an administrator. Would you like to do so?", "Cannot modify game directory!", MessageBoxButtons.YesNo);
                     if(result == DialogResult.Yes)
                     {
                         // User agreed to change permissions. Let's go!
@@ -155,7 +151,7 @@ namespace Golden_Ticket
                     {
                         // User gave up on life and doesn't want to fix permissions. User can go cry in a corner.
                         MessageBox.Show("Permissions will not be changed. No patching will be able to take place. It is reccomended you do NOT try to launch the game.");
-                        Utilities.RestartAsAdmin.Restart("Fixing Permissions");
+                        Utilities.GameDirectory.fixPermissions();
                     }
                 }
             }

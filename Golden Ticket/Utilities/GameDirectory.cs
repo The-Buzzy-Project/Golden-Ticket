@@ -93,6 +93,11 @@ namespace Golden_Ticket.Utilities
             
         }
 
+        public static void fixPermissions()
+        {
+
+        }
+
         // This only runs if we're in "Debug" release mode.
         [Conditional("DEBUG")]
         static void changeDebugBool()
