@@ -102,6 +102,7 @@ namespace Golden_Ticket
 
         private void StartLauncher_DoWork(object sender, DoWorkEventArgs e)
         {
+            int permFixTries = 0;
             // Check if in game directory
             Utilities.GameDirectory.isInGameDirectory();
             StartLauncher.ReportProgress(15);
@@ -145,13 +146,41 @@ namespace Golden_Ticket
                     if(result == DialogResult.Yes)
                     {
                         // User agreed to change permissions. Let's go!
-
+                        Utilities.GameDirectory.fixPermissions();
+                        // WARNING: THIS COULD POSSIBLY BE AN INFINITE LOOP!
+                        while(Utilities.GameDirectory.permsAreCorrect == false) // If it's false, keep trying to change permissions.
+                        {
+                            if(permFixTries >= 3)
+                            {
+                                MessageBox.Show("Could not fix permissions! Aborting!");
+                                Application.Exit();
+                                break;
+                            }
+                            else
+                            {
+                                permFixTries += 1; // For each try, increase this by 1.
+                                Utilities.GameDirectory.fixPermissions();
+                            }
+                        }
                     }
                     else if(result == DialogResult.No)
                     {
                         // User gave up on life and doesn't want to fix permissions. User can go cry in a corner.
                         MessageBox.Show("Permissions will not be changed. No patching will be able to take place. It is reccomended you do NOT try to launch the game.");
-                        Utilities.GameDirectory.fixPermissions();
+                        // Disable buttons
+                        PlayButton.Invoke((MethodInvoker)delegate
+                        {
+                            PlayButton.Enabled = false;
+                        });
+                        OptionsButton.Invoke((MethodInvoker)delegate
+                        {
+                            OptionsButton.Enabled = false;
+                        });
+                        // Update status label
+                        StatusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            StatusLabel.Text = "User declined to fix folder permissions!";
+                        });
                     }
                 }
             }

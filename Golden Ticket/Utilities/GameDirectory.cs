@@ -95,7 +95,9 @@ namespace Golden_Ticket.Utilities
 
         public static void fixPermissions()
         {
-
+            var process = Process.Start(Application.StartupPath + "\\PermissionFix.exe");
+            process.WaitForExit();
+            permsAreCorrect = true;
         }
 
         // This only runs if we're in "Debug" release mode.
