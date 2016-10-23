@@ -44,7 +44,7 @@ namespace Golden_Ticket.Utilities
                 if(System.IO.File.Exists(Application.StartupPath + "\tp.exe"))
                 {
                     // We're in a directory with the correct name, and game executable exists!
-                    return true; ;
+                    return true;
                 }
                 else
                 {
