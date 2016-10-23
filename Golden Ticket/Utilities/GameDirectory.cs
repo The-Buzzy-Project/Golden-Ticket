@@ -38,7 +38,7 @@ namespace Golden_Ticket.Utilities
             // Check if parent directory is default[ish] folder name
             DirectoryInfo installDir = new DirectoryInfo(".");
             string installDirName = installDir.Name;
-            if (installDirName != "SimTheme Park" || installDirName != "Sim Theme Park")
+            if (installDirName == "SimTheme Park" || installDirName == "Sim Theme Park")
             {
                 // We're in the correct directory!
                 inGameDirectory = true;
