@@ -44,6 +44,10 @@ namespace Golden_Ticket
             // Display launcher version in the title of the window
             this.Text = Application.ProductName + " - " + Application.ProductVersion;
 
+            // Are we running as administrator? If so, what's the reason? Is one even set?
+
+
+
             /* THE BELOW STEPS OF THE LAUNCHER STARTING SHOULD BE IN ORDER OF WHICH THEY'RE TO BE EXECUTED!
              *
              * - Check if we're installed to the game directory
@@ -119,11 +123,24 @@ namespace Golden_Ticket
                 // Check if directory permissions allow us to modify as we please without administrator access
                 Utilities.GameDirectory.permissionsAreCorrect();
                 StartLauncher.ReportProgress(75);
-                // Did the method return true?
+                // Did the method return true? Are permissions correct?
                 if(Utilities.GameDirectory.permsAreCorrect == true)
                 {
-                    // Yes, yes it did.
+                    // Yes, yes it did. Permissions are correct.
+                    if(System.IO.File.Exists(Application.StartupPath + "\\GTpermCheck"))
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(Application.StartupPath + "\\GTpermCheck"); // Try to delete file
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Unknown error while checking file permissions!");
+                            Application.Exit(); // Crash and burn so we know where exactly we need to look for a problem.
+                        }
+                        // Continue as normal
 
+                    }
                 }
                 else if(Utilities.GameDirectory.permsAreCorrect == false)
                 {
@@ -138,6 +155,7 @@ namespace Golden_Ticket
                     {
                         // User gave up on life and doesn't want to fix permissions. User can go cry in a corner.
                         MessageBox.Show("Permissions will not be changed. No patching will be able to take place. It is reccomended you do NOT try to launch the game.");
+                        Utilities.RestartAsAdmin.Restart("Fixing Permissions");
                     }
                 }
             }

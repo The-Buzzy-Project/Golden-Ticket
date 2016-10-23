@@ -17,9 +17,9 @@ namespace Golden_Ticket.Utilities
 {
     class RestartAsAdmin
     {
-        public void RestartAsAdministrator(Action runAfterRestart)
+        public static void Restart(string restartReason)
         {
-
+            Properties.Settings.Default.restartAsAdminReason = restartReason;
         }
     }
 }

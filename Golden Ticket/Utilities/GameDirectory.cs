@@ -80,7 +80,7 @@ namespace Golden_Ticket.Utilities
             // There's no way of figuring out if we can write to the directory -- So let's try to make a blank file!
             try
             {
-                System.IO.File.Create("GTpermCheck").Close();
+                System.IO.File.Create(Application.StartupPath + "\\GTpermCheck").Close();
             }
             catch (UnauthorizedAccessException)
             {
