@@ -157,8 +157,20 @@ namespace Golden_Ticket
             }
             else
             {
-                PlayButton.Enabled = false;
-                OptionsButton.Enabled = false;
+                // Disable buttons
+                PlayButton.Invoke((MethodInvoker)delegate
+                {
+                    PlayButton.Enabled = false;
+                });
+                OptionsButton.Invoke((MethodInvoker)delegate
+                {
+                    OptionsButton.Enabled = false;
+                });
+                // Update status label
+                StatusLabel.Invoke((MethodInvoker)delegate
+                {
+                    StatusLabel.Text = "Error!";
+                });
             }
         }
 
