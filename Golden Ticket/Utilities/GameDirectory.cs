@@ -43,9 +43,10 @@ namespace Golden_Ticket.Utilities
             if (installDirName == "SimTheme Park" || installDirName == "Sim Theme Park")
             {
                 // The directory name is correct, but do we have the game files?
-                if(System.IO.File.Exists(Application.StartupPath + "\tp.exe")) // Should probably check for other things as well
+                if(File.Exists(Application.StartupPath + "\\tp.exe")) // Should probably check for other things as well
                 {
                     // We're in a directory with the correct name, and game executable exists!
+                    inGameDirectory = true;
                     return true;
                 }
                 else
