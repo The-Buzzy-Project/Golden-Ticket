@@ -25,6 +25,8 @@ namespace Golden_Ticket.Utilities
 
         public static bool inGameDirectory { get; protected set; }
 
+        public static bool permsAreCorrect { get; protected set; }
+
         // Do a few checks which *should* mean we're installed to the game's directory
         // Probably could also just do a registry check against our path, but whatever.
         public static bool isInGameDirectory()
@@ -41,7 +43,7 @@ namespace Golden_Ticket.Utilities
             if (installDirName == "SimTheme Park" || installDirName == "Sim Theme Park")
             {
                 // The directory name is correct, but do we have the game files?
-                if(System.IO.File.Exists(Application.StartupPath + "\tp.exe"))
+                if(System.IO.File.Exists(Application.StartupPath + "\tp.exe")) // Should probably check for other things as well
                 {
                     // We're in a directory with the correct name, and game executable exists!
                     return true;
@@ -70,10 +72,25 @@ namespace Golden_Ticket.Utilities
             }
 
         }
+        // End "isInGameDirectory" method
+
 
         public static bool permissionsAreCorrect()
         {
-            return false;
+            // There's no way of figuring out if we can write to the directory -- So let's try to make a blank file!
+            try
+            {
+                System.IO.File.Create("GTpermCheck").Close();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                permsAreCorrect = false;
+                return false;
+            }
+            // It succeeded, return true
+            permsAreCorrect = true;
+            return true;
+            
         }
 
         // This only runs if we're in "Debug" release mode.

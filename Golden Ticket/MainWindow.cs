@@ -119,6 +119,32 @@ namespace Golden_Ticket
                 // Check if directory permissions allow us to modify as we please without administrator access
                 Utilities.GameDirectory.permissionsAreCorrect();
                 StartLauncher.ReportProgress(75);
+                // Did the method return true?
+                if(Utilities.GameDirectory.permsAreCorrect == true)
+                {
+                    // Yes, yes it did.
+
+                }
+                else if(Utilities.GameDirectory.permsAreCorrect == false)
+                {
+                    // Ask user if they want to fix the permissions
+                    DialogResult result = MessageBox.Show("This can be fixed by restarting the launcher as administrator and changing the permissions.", "Cannot modify game directory!", MessageBoxButtons.YesNo);
+                    if(result == DialogResult.Yes)
+                    {
+                        // User agreed to change permissions. Let's go!
+
+                    }
+                    else if(result == DialogResult.No)
+                    {
+                        // User gave up on life and doesn't want to fix permissions. User can go cry in a corner.
+                        MessageBox.Show("Permissions will not be changed. No patching will be able to take place. It is reccomended you do NOT try to launch the game.");
+                    }
+                }
+            }
+            else
+            {
+                PlayButton.Enabled = false;
+                OptionsButton.Enabled = false;
             }
         }
 
