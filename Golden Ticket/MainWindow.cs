@@ -84,11 +84,25 @@ namespace Golden_Ticket
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            //Utilities.Utility.updateCheck(true);
+            try
+            {
+                // Try to launch game
+                System.Diagnostics.Process.Start(Application.StartupPath + "\tp.exe");
+            }
+            catch (FileNotFoundException FNFE)
+            {
+                // Can't find the executable, show error.
+                MessageBox.Show("Game executable not found! (" + FNFE.FileName +")");
+            }
+            //finally
+            //{
+                // Write to the debug log eventually...
+            //}
         }
 
         private void StartLauncher_DoWork(object sender, DoWorkEventArgs e)
         {
+            int permFixTries = 0;
             // Check if in game directory
             Utilities.GameDirectory.isInGameDirectory();
             StartLauncher.ReportProgress(15);
@@ -103,9 +117,123 @@ namespace Golden_Ticket
                 // We are. Let's do an update check of the launcher!
                 Utilities.Updater.Check(Utilities.GameDirectory.launcherIsDebugging, "launcherVersion");
                 StartLauncher.ReportProgress(50);
+                // Change StatusLabel in a thread safe way to inform user of current operation...
+                StatusLabel.Invoke((MethodInvoker)delegate
+                {
+                    StatusLabel.Text = "Checking directory permissions...";
+                });
                 // Check if directory permissions allow us to modify as we please without administrator access
                 Utilities.GameDirectory.permissionsAreCorrect();
                 StartLauncher.ReportProgress(75);
+                // Did the method return true? Are permissions correct?
+                if(Utilities.GameDirectory.permsAreCorrect == true)
+                {
+                    // Change StatusLabel in a thread safe way to inform user of current operation...
+                    StatusLabel.Invoke((MethodInvoker)delegate
+                    {
+                        StatusLabel.Text = "Cleaning up...";
+                    });
+                    // Yes, yes it did. Permissions are correct.
+                    if (System.IO.File.Exists(Application.StartupPath + "\\GTpermCheck"))
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(Application.StartupPath + "\\GTpermCheck"); // Try to delete file
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Unknown error while checking file permissions!");
+                            Application.Exit(); // Crash and burn so we know where exactly we need to look for a problem.
+                        }
+                        StartLauncher.ReportProgress(80);
+                        // NOW GO ON TO PATCHING AS NEEDED
+                        StatusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            StatusLabel.Text = "Checking game compatibility...";
+                        });
+                    }
+                }
+                else if(Utilities.GameDirectory.permsAreCorrect == false)
+                {
+                    // Ask user if they want to fix the permissions
+                    DialogResult result = MessageBox.Show("This can be fixed by changing the permissions as an administrator. Would you like to do so?", "Cannot modify game directory!", MessageBoxButtons.YesNo);
+                    if(result == DialogResult.Yes)
+                    {
+                        // Change StatusLabel in a thread safe way to inform user of current operation...
+                        StatusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            StatusLabel.Text = "Fixing directory permissions...";
+                        });
+                        StartLauncher.ReportProgress(85);
+                        // User agreed to change permissions. Let's go!
+                        Utilities.GameDirectory.fixPermissions();
+                        // WARNING: THIS COULD POSSIBLY BE AN INFINITE LOOP!
+                        while(Utilities.GameDirectory.permsAreCorrect == false) // If it's false, keep trying to change permissions.
+                        {
+                            if(permFixTries >= 3)
+                            {
+                                MessageBox.Show("Could not fix permissions! Aborting!");
+                                Application.Exit();
+                                break;
+                            }
+                            else
+                            {
+                                permFixTries += 1; // For each try, increase this by 1.
+                                StartLauncher.ReportProgress(MainProgressbar.Value + 1); // Increase report progress by 1 for each try
+                                Utilities.GameDirectory.fixPermissions();
+                            }
+                        }
+                    }
+                    else if(result == DialogResult.No)
+                    {
+                        // User gave up on life and doesn't want to fix permissions. User can go cry in a corner.
+                        MessageBox.Show("Permissions will not be changed. No patching will be able to take place. It is reccomended you do NOT try to launch the game.");
+                        // Disable buttons
+                        PlayButton.Invoke((MethodInvoker)delegate
+                        {
+                            PlayButton.Enabled = false;
+                        });
+                        OptionsButton.Invoke((MethodInvoker)delegate
+                        {
+                            OptionsButton.Enabled = false;
+                        });
+                        // Update status label
+                        StatusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            StatusLabel.Text = "User declined to fix folder permissions!";
+                        });
+                    }
+                    if(Utilities.GameDirectory.permsAreCorrect == true)
+                    {
+                        // Change StatusLabel in a thread safe way to inform user of current operation...
+                        StatusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            StatusLabel.Text = "Permissions fixed!";
+                        });
+                    }
+                    // NOW GO ON TO PATCHING AS NEEDED
+                    StatusLabel.Invoke((MethodInvoker)delegate
+                    {
+                        StatusLabel.Text = "Checking game compatibility...";
+                    });
+                }
+            }
+            else
+            {
+                // Disable buttons
+                PlayButton.Invoke((MethodInvoker)delegate
+                {
+                    PlayButton.Enabled = false;
+                });
+                OptionsButton.Invoke((MethodInvoker)delegate
+                {
+                    OptionsButton.Enabled = false;
+                });
+                // Update status label
+                StatusLabel.Invoke((MethodInvoker)delegate
+                {
+                    StatusLabel.Text = "Error!";
+                });
             }
         }
 

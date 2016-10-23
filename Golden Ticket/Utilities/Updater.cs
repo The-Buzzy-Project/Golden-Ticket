@@ -44,6 +44,7 @@ namespace Golden_Ticket.Utilities
                     {
                         // If the JSON version doesn't match our program version, there must be an update!
                         MessageBox.Show("Update available! Your version: " + Application.ProductVersion + " Available: " + versions.launcherVersion);
+                        // Add code to have user download and install the update...
                     }
                     else
                     {
@@ -91,6 +92,7 @@ namespace Golden_Ticket.Utilities
                     {
                         // If the JSON version doesn't match our program version, there must be an update!
                         MessageBox.Show("Update available! Your version: " + Application.ProductVersion + " Available: " + versions.launcherVersion);
+                        // Add code to have user download and install the update...
                     }
                     else
                     {

@@ -25,6 +25,8 @@ namespace Golden_Ticket.Utilities
 
         public static bool inGameDirectory { get; protected set; }
 
+        public static bool permsAreCorrect { get; protected set; }
+
         // Do a few checks which *should* mean we're installed to the game's directory
         // Probably could also just do a registry check against our path, but whatever.
         public static bool isInGameDirectory()
@@ -38,8 +40,24 @@ namespace Golden_Ticket.Utilities
             // Check if parent directory is default[ish] folder name
             DirectoryInfo installDir = new DirectoryInfo(".");
             string installDirName = installDir.Name;
-            if (installDirName != "SimTheme Park" || installDirName != "Sim Theme Park")
+            if (installDirName == "SimTheme Park" || installDirName == "Sim Theme Park")
             {
+                // The directory name is correct, but do we have the game files?
+                if(File.Exists(Application.StartupPath + "\\tp.exe")) // Should probably check for other things as well
+                {
+                    // We're in a directory with the correct name, and game executable exists!
+                    inGameDirectory = true;
+                    return true;
+                }
+                else
+                {
+                    // We're in a directory with the correct name, but the game executable doesn't exist.
+                    MessageBox.Show("It appears the launcher is installed in the correct folder. However, we were unable to find the game executable. Please reinstall the game and try again.");
+                    
+                    // FIXME: Find a way to tell MainWindow to stop everything and disable buttons instead of just closing
+                    Application.Exit();
+                }
+
                 // We're in the correct directory!
                 inGameDirectory = true;
                 MessageBox.Show("Game installed to correct directory");
@@ -55,10 +73,32 @@ namespace Golden_Ticket.Utilities
             }
 
         }
+        // End "isInGameDirectory" method
+
 
         public static bool permissionsAreCorrect()
         {
-            return false;
+            // There's no way of figuring out if we can write to the directory -- So let's try to make a blank file!
+            try
+            {
+                System.IO.File.Create(Application.StartupPath + "\\GTpermCheck").Close();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                permsAreCorrect = false;
+                return false;
+            }
+            // It succeeded, return true
+            permsAreCorrect = true;
+            return true;
+            
+        }
+
+        public static void fixPermissions()
+        {
+            var process = Process.Start(Application.StartupPath + "\\PermissionFix.exe");
+            process.WaitForExit();
+            permsAreCorrect = true;
         }
 
         // This only runs if we're in "Debug" release mode.
