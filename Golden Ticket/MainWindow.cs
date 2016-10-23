@@ -84,7 +84,20 @@ namespace Golden_Ticket
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            //Utilities.Utility.updateCheck(true);
+            try
+            {
+                // Try to launch game
+                System.Diagnostics.Process.Start(Application.StartupPath + "\tp.exe");
+            }
+            catch (FileNotFoundException FNFE)
+            {
+                // Can't find the executable, show error.
+                MessageBox.Show("Game executable not found! (" + FNFE.FileName +")");
+            }
+            //finally
+            //{
+                // Write to the debug log eventually...
+            //}
         }
 
         private void StartLauncher_DoWork(object sender, DoWorkEventArgs e)

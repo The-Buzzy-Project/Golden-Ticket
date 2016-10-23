@@ -40,6 +40,21 @@ namespace Golden_Ticket.Utilities
             string installDirName = installDir.Name;
             if (installDirName == "SimTheme Park" || installDirName == "Sim Theme Park")
             {
+                // The directory name is correct, but do we have the game files?
+                if(System.IO.File.Exists(Application.StartupPath + "\tp.exe"))
+                {
+                    // We're in a directory with the correct name, and game executable exists!
+                    return true; ;
+                }
+                else
+                {
+                    // We're in a directory with the correct name, but the game executable doesn't exist.
+                    MessageBox.Show("It appears the launcher is installed in the correct folder. However, we were unable to find the game executable. Please reinstall the game and try again.");
+                    
+                    // FIXME: Find a way to tell MainWindow to stop everything and disable buttons instead of just closing
+                    Application.Exit();
+                }
+
                 // We're in the correct directory!
                 inGameDirectory = true;
                 MessageBox.Show("Game installed to correct directory");
