@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Golden Ticket")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("The Buzzy Project")]
 [assembly: AssemblyProduct("Golden Ticket")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Golden Ticket Copyright © 2016 The Buzzy Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
