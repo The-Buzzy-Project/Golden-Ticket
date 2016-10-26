@@ -1,12 +1,6 @@
 # Golden Ticket [![Build Status](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket.svg?branch=Development)](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket) ![Overall](http://progressed.io/bar/23?title=Progress)
 Launcher and patcher for Sim Theme Park!
 
-## Progress
-
-| Feature | | Progress |
-| --------| | ---------|
-| test | | test |
-
 ## About Golden Ticket
 
 Golden Ticket is a launcher for Sim Theme Park, which will automatically patch your game installation to run on any
