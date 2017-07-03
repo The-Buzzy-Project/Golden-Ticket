@@ -40,6 +40,21 @@ namespace Golden_Ticket
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            DialogResult userAnswer;
+            userAnswer = MessageBox.Show(this, "This version of Golden Ticket is a PRERELEASE! It's unfinished and may give scrary looking errors." +
+                                " If you're uncomfortable with using unfinished software, please close this program."
+                                + Environment.NewLine + Environment.NewLine + "The developers and/or contributors of this software are NOT responsible for" +
+                                " save-game corruption, park glitches, rides flipping upside down, or Buzzy wearing a coconut bra and doing the hula." +
+                                Environment.NewLine + Environment.NewLine + "Joking aside, this program will make unofficial and hacky modifications" +
+                                " to your game install. Use this program at your own risk." +
+                                Environment.NewLine + Environment.NewLine + "By clicking 'Yes', you agree agree you're responsible for any damages caused by this program and you use this willingly.",
+                                "THIS IS PRERELEASE SOFTWARE!",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if(userAnswer == DialogResult.No)
+            {
+                Application.Exit();
+            }
+
             // Do all our shit in a BackgroundWorker so we don't freeze the UI
             launchButton.Enabled = false;
             LauncherStartup.RunWorkerAsync();

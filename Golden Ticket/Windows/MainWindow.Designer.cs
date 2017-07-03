@@ -81,7 +81,7 @@
             this.DoubleBuffered = true;
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Golden Ticket (BETA)";
+            this.Text = "Golden Ticket (PRERELEASE)";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
