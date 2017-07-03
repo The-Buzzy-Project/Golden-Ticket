@@ -40,7 +40,6 @@ namespace Golden_Ticket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            buildLabel.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             // Do all our shit in a BackgroundWorker so we don't freeze the UI
             launchButton.Enabled = false;
             LauncherStartup.RunWorkerAsync();
