@@ -59,15 +59,5 @@ namespace Golden_Ticket.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap RestoredBackground {
-            get {
-                object obj = ResourceManager.GetObject("RestoredBackground", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }
