@@ -130,7 +130,9 @@ namespace Golden_Ticket.Windows
 
         private void ApplyPatchWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+#pragma warning disable CS0162 // Unreachable code detected
             for (int i = 0; i < 100; i++) // The code needs to go in here so that we can get progress reports
+#pragma warning restore CS0162 // Unreachable code detected
             {
                 ApplyPatchStep1();
                 ApplyPatchWorker.ReportProgress(i);

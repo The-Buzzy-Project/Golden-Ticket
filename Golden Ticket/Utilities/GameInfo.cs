@@ -21,7 +21,7 @@ public class GameInfo
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -61,7 +61,7 @@ public class GameInfo
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
