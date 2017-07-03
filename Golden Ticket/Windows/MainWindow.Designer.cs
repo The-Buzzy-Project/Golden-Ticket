@@ -32,6 +32,7 @@
             this.LauncherStartup = new System.ComponentModel.BackgroundWorker();
             this.ProgressLabel = new System.Windows.Forms.Label();
             this.launchButton = new System.Windows.Forms.Button();
+            this.buildLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LauncherProgressBar
@@ -70,11 +71,23 @@
             this.launchButton.UseVisualStyleBackColor = true;
             this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
+            // buildLabel
+            // 
+            this.buildLabel.AutoSize = true;
+            this.buildLabel.Location = new System.Drawing.Point(599, 9);
+            this.buildLabel.Name = "buildLabel";
+            this.buildLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.buildLabel.Size = new System.Drawing.Size(71, 13);
+            this.buildLabel.TabIndex = 3;
+            this.buildLabel.Text = "x.x.xxxx.xxxxx";
+            this.buildLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(682, 486);
+            this.Controls.Add(this.buildLabel);
             this.Controls.Add(this.launchButton);
             this.Controls.Add(this.ProgressLabel);
             this.Controls.Add(this.LauncherProgressBar);
@@ -94,6 +107,7 @@
         private System.ComponentModel.BackgroundWorker LauncherStartup;
         public System.Windows.Forms.Label ProgressLabel;
         private System.Windows.Forms.Button launchButton;
+        private System.Windows.Forms.Label buildLabel;
     }
 }
 
