@@ -107,7 +107,10 @@ namespace Golden_Ticket
             // Get location the launcher is running from
             launcherDirectory = pathUtils.GetLauncherDir();
             // Compare the two
-            if (launcherDirectory != gameDirectory)
+
+            // Fix Issue #6 -- Launcher is sad if the game directory and reg location have mismatch case.
+            // Instead of using a straight 'if (string != string)', use 'string.Equals' so that we can ignore case.
+            if (!launcherDirectory.Equals(gameDirectory, StringComparison.OrdinalIgnoreCase))
             {
                 // Launcher isn't running in the game directory. Freak out!
                 errorCode = 1;

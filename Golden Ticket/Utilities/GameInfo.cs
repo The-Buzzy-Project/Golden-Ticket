@@ -29,7 +29,6 @@ public class GameInfo
 
     public string GetInstallLocationFromReg()
     {
-
         try
         {
             if (Environment.Is64BitOperatingSystem == true) // There's a difference in the registry path between x86 and x64. Check the arch and change accordingly.
