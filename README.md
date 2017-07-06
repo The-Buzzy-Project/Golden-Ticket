@@ -1,4 +1,4 @@
-# Golden Ticket [![Build Status](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket.svg?branch=Development)](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket) ![Overall](http://progressed.io/bar/65?title=Progress)
+# Golden Ticket [![Build Status](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket.svg?branch=Development)](https://travis-ci.org/The-Buzzy-Project/Golden-Ticket) ![Overall](http://progressed.io/bar/65?title=Progress) ![Downloads](https://img.shields.io/github/downloads/The-Buzzy-Project/Golden-Ticket/total.svg) [![Trello](https://img.shields.io/badge/Trello-View%20progress%20and%20plans!-blue.svg)](https://trello.com/b/bqOCcwIK)
 Launcher and patcher for Sim Theme Park!
 
 ## About Golden Ticket
