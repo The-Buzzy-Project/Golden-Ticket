@@ -1,14 +1,8 @@
 ﻿using Golden_Ticket.Windows;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Golden_Ticket
@@ -23,7 +17,6 @@ namespace Golden_Ticket
         NotifyUser notifyUser = new NotifyUser();
         GameInfo gameInfo = new GameInfo();
         MachineInfo machineInfo = new MachineInfo();
-        Patches patches = new Patches();
         Errors errors = new Errors();
 
         // Strings we're going to use later

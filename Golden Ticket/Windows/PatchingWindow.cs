@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.IO;
@@ -19,7 +13,6 @@ namespace Golden_Ticket.Windows
         bool applyingPatch;
         Exception exForError;
         int errorCode;
-        Patches patches = new Patches();
         PathUtils pathUtils = new PathUtils();
         NotifyUser notifyUser = new NotifyUser();
         Errors errors = new Errors();

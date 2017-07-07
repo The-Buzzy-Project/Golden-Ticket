@@ -65,7 +65,6 @@
     <Compile Include="Utilities\GameInfo.cs" />
     <Compile Include="Utilities\MachineInfo.cs" />
     <Compile Include="Utilities\NotifyUser.cs" />
-    <Compile Include="Utilities\Patches.cs" />
     <Compile Include="Utilities\PathUtils.cs" />
     <EmbeddedResource Include="Windows\PatchingWindow.resx">
       <DependentUpon>PatchingWindow.cs</DependentUpon>
