@@ -41,7 +41,7 @@ namespace Golden_Ticket.Windows
         private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             // Start the installer
-            Process.Start(pathUtils.goldenTicketTempFolder + "\\Update.exe");
+            Process.Start(pathUtils.goldenTicketTempFolder + "\\Update.exe" + "/S");
             // Close the launcher
             Application.Exit();
         }
