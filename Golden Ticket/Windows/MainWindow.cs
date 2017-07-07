@@ -3,6 +3,7 @@ using Golden_Ticket.Windows;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -75,6 +76,7 @@ namespace Golden_Ticket
 
             for (int i = 0; i < 100; i++) // The code needs to go in here so that we can get progress reports
             {
+                CleanupTempFolder(); // Let's clean the temp folder like we should
                 StartupStep1(); // Begin step 1
                 LauncherStartup.ReportProgress(i); // Report progress
                 if (LauncherStartup.CancellationPending) { e.Cancel = true; return; } // Check if we need to cancel
@@ -106,6 +108,26 @@ namespace Golden_Ticket
             LauncherStartup.ReportProgress(100);
         }
 
+        void CleanupTempFolder()
+        {
+            clearFolder(pathUtils.goldenTicketTempFolder);
+        }
+
+        private void clearFolder(string FolderName)
+        {
+            DirectoryInfo dir = new DirectoryInfo(FolderName);
+
+            foreach (FileInfo fi in dir.GetFiles())
+            {
+                fi.Delete();
+            }
+
+            foreach (DirectoryInfo di in dir.GetDirectories())
+            {
+                clearFolder(di.FullName);
+                di.Delete();
+            }
+        }
 
         void StartupStep1()
         {
