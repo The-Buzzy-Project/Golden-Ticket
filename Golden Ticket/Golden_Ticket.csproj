@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -48,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Utilities\Errors.cs" />
+    <Compile Include="Utilities\UpdateChecker.cs" />
     <Compile Include="Windows\PatchingWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +70,12 @@
     <Compile Include="Utilities\MachineInfo.cs" />
     <Compile Include="Utilities\NotifyUser.cs" />
     <Compile Include="Utilities\PathUtils.cs" />
+    <Compile Include="Windows\UpdateWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\UpdateWindow.Designer.cs">
+      <DependentUpon>UpdateWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Windows\PatchingWindow.resx">
       <DependentUpon>PatchingWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -82,6 +92,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Windows\UpdateWindow.resx">
+      <DependentUpon>UpdateWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

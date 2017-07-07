@@ -1,4 +1,5 @@
-﻿using Golden_Ticket.Windows;
+﻿using Golden_Ticket.Utilities;
+using Golden_Ticket.Windows;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace Golden_Ticket
         GameInfo gameInfo = new GameInfo();
         MachineInfo machineInfo = new MachineInfo();
         Errors errors = new Errors();
+        UpdateChecker updateChecker = new UpdateChecker();
 
         // Strings we're going to use later
         string gameDirectory;
@@ -47,6 +49,20 @@ namespace Golden_Ticket
             {
                 Application.Exit();
             }
+
+            // Check for updates
+            updateChecker.checkForUpdate(this);
+
+            if(updateChecker.errorWhileChecking == true)
+            {
+                notifyUser.Notify(this, "Could not check for updates!",
+                                    "An unexpected error occurred while checking for updates. Golden Ticket will not be able to notify you of new updates."
+                                    + Environment.NewLine + Environment.NewLine + "Below is the error. Please screenshot this message box and report it to the developer by creating a new Issue on GitHub."
+                                    + Environment.NewLine + Environment.NewLine + updateChecker.exForReporting,
+                                    MessageBoxIcon.Warning, MessageBoxButtons.OK);
+            }
+
+            // If there wasn't an update, we can start.
 
             // Do all our shit in a BackgroundWorker so we don't freeze the UI
             launchButton.Enabled = false;
