@@ -207,7 +207,6 @@ namespace Golden_Ticket.Windows
 
                 if (Directory.Exists(gt810ConfigsDirectory))
                 {
-                    MessageBox.Show("Installing 8/8.1/10 configs");
                     try
                     {
                         foreach (var file in Directory.GetFiles(gt810ConfigsDirectory + "\\data"))
