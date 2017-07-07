@@ -51,7 +51,6 @@ namespace Golden_Ticket.Utilities
                     }
                     else
                     {
-                        MessageBox.Show(window, "Latest version!");
                         return;
                     }
 
