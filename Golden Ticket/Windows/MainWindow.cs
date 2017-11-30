@@ -46,7 +46,7 @@ namespace Golden_Ticket
             ThemeLauncher();
             if(isDebug == true)
             {
-                
+                MessageBox.Show("Debug mode");
             }
             else {
             DialogResult userAnswer;
@@ -82,7 +82,6 @@ namespace Golden_Ticket
             launchButton.Enabled = false;
             LauncherStartup.RunWorkerAsync();
             }
-            MessageBox.Show("Debug mode");
         }
 
 
