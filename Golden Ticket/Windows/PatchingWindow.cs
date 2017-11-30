@@ -57,7 +57,7 @@ namespace Golden_Ticket.Windows
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
 
             bytesLabel.Visible = true;
-            this.Text = "Downloading patch...";
+            patchingTitleLabel.Text = "Downloading patch...";
 
             // Starts the download
 
@@ -80,7 +80,7 @@ namespace Golden_Ticket.Windows
 
         private void InstallPatch()
         {
-                this.Text = "Preparing patch...";
+                patchingTitleLabel.Text = "Preparing patch...";
                 PatchingProgressbar.Value = 0;
                 bytesLabel.Visible = false;
                 ApplyPatchWorker.RunWorkerAsync();
@@ -239,7 +239,7 @@ namespace Golden_Ticket.Windows
             }
             else
             {
-                this.Text = "Done patching!";
+                patchingTitleLabel.Text = "Done patching!";
                 this.Close();
             }
         }
@@ -248,7 +248,7 @@ namespace Golden_Ticket.Windows
         {
             if(applyingPatch == true)
             {
-                this.Text = "Applying patch...";
+                patchingTitleLabel.Text = "Applying patch...";
             }
         }
     }

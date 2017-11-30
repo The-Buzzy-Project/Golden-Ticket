@@ -70,6 +70,12 @@
     <Compile Include="Utilities\MachineInfo.cs" />
     <Compile Include="Utilities\NotifyUser.cs" />
     <Compile Include="Utilities\PathUtils.cs" />
+    <Compile Include="Windows\PatchingWindowBottom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\PatchingWindowBottom.Designer.cs">
+      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UpdateWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Windows\PatchingWindowBottom.resx">
+      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\UpdateWindow.resx">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
     </EmbeddedResource>
