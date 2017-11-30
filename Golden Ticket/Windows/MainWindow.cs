@@ -435,5 +435,10 @@ namespace Golden_Ticket
         {
             mouseDown = false;
         }
+
+        private void optionsButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

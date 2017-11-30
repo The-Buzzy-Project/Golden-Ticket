@@ -33,11 +33,11 @@
             this.ProgressLabel = new System.Windows.Forms.Label();
             this.launchButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.optionsButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.launcherExitButton = new System.Windows.Forms.Button();
             this.launcherTitleLabel = new System.Windows.Forms.Label();
-            this.optionsButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -93,6 +93,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(751, 59);
             this.panel1.TabIndex = 3;
+            // 
+            // optionsButton
+            // 
+            this.optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.optionsButton.ForeColor = System.Drawing.Color.White;
+            this.optionsButton.Location = new System.Drawing.Point(653, 32);
+            this.optionsButton.Name = "optionsButton";
+            this.optionsButton.Size = new System.Drawing.Size(86, 23);
+            this.optionsButton.TabIndex = 5;
+            this.optionsButton.Text = "Options";
+            this.optionsButton.UseVisualStyleBackColor = true;
+            this.optionsButton.Click += new System.EventHandler(this.optionsButton_Click);
             // 
             // panel2
             // 
@@ -152,17 +164,6 @@
             this.launcherTitleLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.launcherTitleLabel_MouseDown);
             this.launcherTitleLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.launcherTitleLabel_MouseMove);
             this.launcherTitleLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.launcherTitleLabel_MouseUp);
-            // 
-            // optionsButton
-            // 
-            this.optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.optionsButton.ForeColor = System.Drawing.Color.White;
-            this.optionsButton.Location = new System.Drawing.Point(653, 32);
-            this.optionsButton.Name = "optionsButton";
-            this.optionsButton.Size = new System.Drawing.Size(86, 23);
-            this.optionsButton.TabIndex = 5;
-            this.optionsButton.Text = "Options";
-            this.optionsButton.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 

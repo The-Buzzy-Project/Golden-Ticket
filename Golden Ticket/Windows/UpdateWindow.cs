@@ -1,15 +1,11 @@
 ﻿using Golden_Ticket.Utilities;
 using System;
 using System.Net;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace Golden_Ticket.Windows
 {
@@ -54,6 +50,5 @@ namespace Golden_Ticket.Windows
 
             DownloadProgressBar.Value = e.ProgressPercentage;
         }
-
     }
 }

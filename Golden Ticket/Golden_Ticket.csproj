@@ -76,6 +76,12 @@
     <Compile Include="Windows\UpdateWindow.Designer.cs">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\UpdateWindowBottom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\UpdateWindowBottom.Designer.cs">
+      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Windows\PatchingWindow.resx">
       <DependentUpon>PatchingWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +100,9 @@
     </Compile>
     <EmbeddedResource Include="Windows\UpdateWindow.resx">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\UpdateWindowBottom.resx">
+      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
