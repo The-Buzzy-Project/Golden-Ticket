@@ -6,11 +6,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Golden_Ticket
 {
     public partial class MainWindow : Form
     {
+        Point lastLocation;
+        bool mouseDown;
+        
+        bool isDebug = true;
+
         public int errorCode;
         bool needsPatching;
 
@@ -36,6 +42,13 @@ namespace Golden_Ticket
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            launcherTitleLabel.Text = this.Text;
+            ThemeLauncher();
+            if(isDebug == true)
+            {
+                
+            }
+            else {
             DialogResult userAnswer;
             userAnswer = MessageBox.Show(this, "This version of Golden Ticket is a PRERELEASE! It's unfinished and may give scrary looking errors." +
                                 " If you're uncomfortable with using unfinished software, please close this program."
@@ -68,6 +81,8 @@ namespace Golden_Ticket
             // Do all our shit in a BackgroundWorker so we don't freeze the UI
             launchButton.Enabled = false;
             LauncherStartup.RunWorkerAsync();
+            }
+            MessageBox.Show("Debug mode");
         }
 
 
@@ -339,6 +354,86 @@ namespace Golden_Ticket
                                     Environment.NewLine + Environment.NewLine + ex.ToString(),
                                     MessageBoxIcon.Error, MessageBoxButtons.OK);
             }
+        }
+        void ThemeLauncher()
+        {
+            panel1.BackColor = System.Drawing.Color.FromArgb(125, 0, 0, 0);
+            panel2.BackColor = System.Drawing.Color.FromArgb(125, 0, 0, 0);
+        }
+
+        private void launcherExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+
+
+
+
+
+
+
+
+        /*
+         * -----------------------------------
+         * |   Custom Window Dragging Code   |
+         * -----------------------------------
+         */
+
+
+
+        // This allows dragging from the panel itself
+
+        private void panel2_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void panel2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown) {
+            this.Location = new Point(
+                (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+            this.Update();
+            }
+        }
+
+        private void panel2_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+
+
+        // This allows dragging even if you do it on the window title/label
+
+        private void launcherTitleLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void launcherTitleLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void launcherTitleLabel_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
         }
     }
 }
