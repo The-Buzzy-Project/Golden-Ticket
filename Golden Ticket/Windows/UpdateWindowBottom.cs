@@ -22,7 +22,7 @@ namespace Golden_Ticket.Windows
         private void UpdateWindowBottom_Load(object sender, EventArgs e)
         {
             //These are properties you could also set in the Designer
-        this.Opacity = 0.6F;
+        this.Opacity = 0.5F;
         this.BackColor = Color.Black; //for example
 
         updateWindow.FormBorderStyle = FormBorderStyle.None;
