@@ -111,7 +111,14 @@ namespace Golden_Ticket
 
         void CleanupTempFolder()
         {
-            clearFolder(pathUtils.goldenTicketTempFolder);
+            if (Directory.Exists(pathUtils.goldenTicketTempFolder))
+            {
+                clearFolder(pathUtils.goldenTicketTempFolder);
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void clearFolder(string FolderName)
@@ -224,6 +231,11 @@ namespace Golden_Ticket
 
         void StartupStep5()
         {
+            // FIXME: This somehow broke after themeing. All of this will run but it isn't passed
+            // to the patching window for some reason. Currently all below code has been modified
+            // and moved to the patching window itself to 'fix' it for now.
+
+
             /*
              * This is going to get a little hectic...
              * 

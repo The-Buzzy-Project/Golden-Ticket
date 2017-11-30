@@ -40,5 +40,13 @@ namespace Golden_Ticket.Windows
             patchingWindow.Location = this.PointToScreen(Point.Empty);
             patchingWindow.Size = this.ClientSize;
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if(patchingWindow.Visible == false)
+            {
+                this.Close();
+            }
+        }
     }
 }

@@ -191,7 +191,6 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar LauncherProgressBar;
-        private System.ComponentModel.BackgroundWorker LauncherStartup;
         public System.Windows.Forms.Label ProgressLabel;
         private System.Windows.Forms.Button launchButton;
         private System.Windows.Forms.Panel panel1;
@@ -200,6 +199,7 @@
         private System.Windows.Forms.Button launcherExitButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button optionsButton;
+        public System.ComponentModel.BackgroundWorker LauncherStartup;
     }
 }
 
