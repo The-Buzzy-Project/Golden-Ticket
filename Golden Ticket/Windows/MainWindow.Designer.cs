@@ -37,6 +37,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.launcherExitButton = new System.Windows.Forms.Button();
             this.launcherTitleLabel = new System.Windows.Forms.Label();
+            this.optionsButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +73,7 @@
             // 
             this.launchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.launchButton.ForeColor = System.Drawing.Color.White;
-            this.launchButton.Location = new System.Drawing.Point(653, 24);
+            this.launchButton.Location = new System.Drawing.Point(653, 5);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(86, 23);
             this.launchButton.TabIndex = 2;
@@ -83,6 +84,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.optionsButton);
             this.panel1.Controls.Add(this.launchButton);
             this.panel1.Controls.Add(this.LauncherProgressBar);
             this.panel1.Controls.Add(this.ProgressLabel);
@@ -151,6 +153,17 @@
             this.launcherTitleLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.launcherTitleLabel_MouseMove);
             this.launcherTitleLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.launcherTitleLabel_MouseUp);
             // 
+            // optionsButton
+            // 
+            this.optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.optionsButton.ForeColor = System.Drawing.Color.White;
+            this.optionsButton.Location = new System.Drawing.Point(653, 32);
+            this.optionsButton.Name = "optionsButton";
+            this.optionsButton.Size = new System.Drawing.Size(86, 23);
+            this.optionsButton.TabIndex = 5;
+            this.optionsButton.Text = "Options";
+            this.optionsButton.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -185,6 +198,7 @@
         private System.Windows.Forms.Label launcherTitleLabel;
         private System.Windows.Forms.Button launcherExitButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button optionsButton;
     }
 }
 
