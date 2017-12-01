@@ -12,7 +12,7 @@ namespace Golden_Ticket.Utilities
         public Exception exForReporting;
 
 #pragma warning disable CS0414 // Field is assigned but never used
-        string launcherVersion = "0.1.2";
+        string launcherVersion = "0.2.0";
 #pragma warning restore CS0414 // Field is assigned but never used
         string jsonVersion;
         string downloadURL;
