@@ -8,10 +8,7 @@ PC running Windows Vista or newer<sup>1</sup>. It does so by changing out files 
 which have been tested to work on a majority of systems with positive repeatable results. Some files are also added to
 make the game work \[better\], such as required fonts, cutscenes, and music.
 
-![Screenshot](http://imgur.com/vAQClmE.png)
-
-*Mouth watering UI skills*
-
+![Main Window Screenshot](https://i.imgur.com/QKlXWUy.png)
 
 ## Contributing
 
