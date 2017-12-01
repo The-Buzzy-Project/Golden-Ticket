@@ -50,17 +50,17 @@ namespace Golden_Ticket.Windows
             }
             // Done with the febreeze!
 
-
             // Let's get ready to download the patch zip from Github
             WebClient client = new WebClient();
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
 
             bytesLabel.Visible = true;
-            this.Text = "Downloading patch...";
+            patchingTitleLabel.Text = "Downloading patch...";
 
             // Starts the download
 
+            patchCheck:
             if(patchToDownload == 1)
             {
                 // Download Vista/7 patch
@@ -75,12 +75,43 @@ namespace Golden_Ticket.Windows
                     // Download 8/8.1/10 graphics configs
                     //client.DownloadFileAsync(new Uri("https://github.com/The-Buzzy-Project/8-10-Configs/archive/master.zip"), pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip"); // 8/8.1/10 graphics configs
                 }
+                else
+                {
+                    MessageBox.Show("Um?");
+                    MachineInfo machineInfo = new MachineInfo();
+                    string winVer = machineInfo.WindowsVersion();
+
+                    if (winVer.Contains("Windows Vista") || winVer.Contains("Windows 7"))
+                    {
+                        // Patch for Vista/7
+                        patchToDownload = 1;
+                        goto patchCheck;
+                    }
+
+                    if (winVer.Contains("Windows 8") || winVer.Contains("Windows 8.1") || winVer.Contains("Windows 10"))
+                    {
+                        // Patch for 8/8.1/10
+                        patchToDownload = 2;
+                        goto patchCheck;
+                    }
+
+                    // Just in case there's some freak accident where this doesn't return ANY of our expected Windows versions, let's flip out!
+                    if (!winVer.Contains("Windows Vista") & !winVer.Contains("Windows 7") & !winVer.Contains("Windows 8")
+                        & !winVer.Contains("Windows 8.1") & !winVer.Contains("Windows 10"))
+                    {
+                        // Set error code to 3 and stop the launcher
+                        errorCode = 3;
+                        MainWindow mw = new MainWindow();
+                        mw.LauncherStartup.CancelAsync();
+                    }
+                    goto patchCheck;
+                }
             }
         }
 
         private void InstallPatch()
         {
-                this.Text = "Preparing patch...";
+                patchingTitleLabel.Text = "Preparing patch...";
                 PatchingProgressbar.Value = 0;
                 bytesLabel.Visible = false;
                 ApplyPatchWorker.RunWorkerAsync();
@@ -239,7 +270,7 @@ namespace Golden_Ticket.Windows
             }
             else
             {
-                this.Text = "Done patching!";
+                patchingTitleLabel.Text = "Done patching!";
                 this.Close();
             }
         }
@@ -248,7 +279,7 @@ namespace Golden_Ticket.Windows
         {
             if(applyingPatch == true)
             {
-                this.Text = "Applying patch...";
+                patchingTitleLabel.Text = "Applying patch...";
             }
         }
     }

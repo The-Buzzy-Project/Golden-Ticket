@@ -6,11 +6,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Golden_Ticket
 {
     public partial class MainWindow : Form
     {
+        Point lastLocation;
+        bool mouseDown;
+        
+        bool isDebug = false;
+
         public int errorCode;
         bool needsPatching;
 
@@ -36,20 +42,14 @@ namespace Golden_Ticket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DialogResult userAnswer;
-            userAnswer = MessageBox.Show(this, "This version of Golden Ticket is a PRERELEASE! It's unfinished and may give scrary looking errors." +
-                                " If you're uncomfortable with using unfinished software, please close this program."
-                                + Environment.NewLine + Environment.NewLine + "The developers and/or contributors of this software are NOT responsible for" +
-                                " save-game corruption, park glitches, rides flipping upside down, or Buzzy wearing a coconut bra and doing the hula." +
-                                Environment.NewLine + Environment.NewLine + "Joking aside, this program will make unofficial and hacky modifications" +
-                                " to your game install. Use this program at your own risk." +
-                                Environment.NewLine + Environment.NewLine + "By clicking 'Yes', you agree agree you're responsible for any damages caused by this program and you use this willingly.",
-                                "THIS IS PRERELEASE SOFTWARE!",
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if(userAnswer == DialogResult.No)
+            launcherTitleLabel.Text = this.Text;
+            ThemeLauncher();
+            if(isDebug == true)
             {
-                Application.Exit();
+                MessageBox.Show("Debug mode");
             }
+            else
+            {
 
             // Check for updates
             updateChecker.checkForUpdate(this);
@@ -68,6 +68,7 @@ namespace Golden_Ticket
             // Do all our shit in a BackgroundWorker so we don't freeze the UI
             launchButton.Enabled = false;
             LauncherStartup.RunWorkerAsync();
+            }
         }
 
 
@@ -110,7 +111,14 @@ namespace Golden_Ticket
 
         void CleanupTempFolder()
         {
-            clearFolder(pathUtils.goldenTicketTempFolder);
+            if (Directory.Exists(pathUtils.goldenTicketTempFolder))
+            {
+                clearFolder(pathUtils.goldenTicketTempFolder);
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void clearFolder(string FolderName)
@@ -223,6 +231,11 @@ namespace Golden_Ticket
 
         void StartupStep5()
         {
+            // FIXME: This somehow broke after themeing. All of this will run but it isn't passed
+            // to the patching window for some reason. Currently all below code has been modified
+            // and moved to the patching window itself to 'fix' it for now.
+
+
             /*
              * This is going to get a little hectic...
              * 
@@ -240,18 +253,20 @@ namespace Golden_Ticket
             if (winVer.Contains("Windows Vista") || winVer.Contains("Windows 7"))
             {
                 // Patch for Vista/7
+                PatchingWindowBottom patchingWindowBottom = new PatchingWindowBottom();
                 PatchingWindow patchingWindow = new PatchingWindow();
                 patchingWindow.patchToDownload = 1;
-                patchingWindow.ShowDialog(this);
+                patchingWindowBottom.ShowDialog(this);
                 return; // ShowDialog has closed. We're done.
             }
 
             if (winVer.Contains("Windows 8") || winVer.Contains("Windows 8.1") || winVer.Contains("Windows 10"))
             {
                 // Patch for 8/8.1/10
+                PatchingWindowBottom patchingWindowBottom = new PatchingWindowBottom();
                 PatchingWindow patchingWindow = new PatchingWindow();
                 patchingWindow.patchToDownload = 2;
-                patchingWindow.ShowDialog(this);
+                patchingWindowBottom.ShowDialog(this);
                 return; // ShowDialog has closed. We're done.
             }
 
@@ -339,6 +354,91 @@ namespace Golden_Ticket
                                     Environment.NewLine + Environment.NewLine + ex.ToString(),
                                     MessageBoxIcon.Error, MessageBoxButtons.OK);
             }
+        }
+        void ThemeLauncher()
+        {
+            panel1.BackColor = System.Drawing.Color.FromArgb(125, 0, 0, 0);
+            panel2.BackColor = System.Drawing.Color.FromArgb(125, 0, 0, 0);
+        }
+
+        private void launcherExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+
+
+
+
+
+
+
+
+        /*
+         * -----------------------------------
+         * |   Custom Window Dragging Code   |
+         * -----------------------------------
+         */
+
+
+
+        // This allows dragging from the panel itself
+
+        private void panel2_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void panel2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown) {
+            this.Location = new Point(
+                (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+            this.Update();
+            }
+        }
+
+        private void panel2_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+
+
+        // This allows dragging even if you do it on the window title/label
+
+        private void launcherTitleLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void launcherTitleLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void launcherTitleLabel_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void optionsButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

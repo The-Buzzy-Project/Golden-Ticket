@@ -70,11 +70,23 @@
     <Compile Include="Utilities\MachineInfo.cs" />
     <Compile Include="Utilities\NotifyUser.cs" />
     <Compile Include="Utilities\PathUtils.cs" />
+    <Compile Include="Windows\PatchingWindowBottom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\PatchingWindowBottom.Designer.cs">
+      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UpdateWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\UpdateWindow.Designer.cs">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\UpdateWindowBottom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\UpdateWindowBottom.Designer.cs">
+      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Windows\PatchingWindow.resx">
       <DependentUpon>PatchingWindow.cs</DependentUpon>
@@ -92,8 +104,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Windows\PatchingWindowBottom.resx">
+      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\UpdateWindow.resx">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\UpdateWindowBottom.resx">
+      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -108,6 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coasterblurred.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
