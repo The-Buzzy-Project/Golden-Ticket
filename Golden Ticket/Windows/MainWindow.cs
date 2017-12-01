@@ -27,6 +27,7 @@ namespace Golden_Ticket
         MachineInfo machineInfo = new MachineInfo();
         Errors errors = new Errors();
         UpdateChecker updateChecker = new UpdateChecker();
+        OptionsWindow optionsWindow = new OptionsWindow();
 
         // Strings we're going to use later
         string gameDirectory;
@@ -438,7 +439,8 @@ namespace Golden_Ticket
 
         private void optionsButton_Click(object sender, EventArgs e)
         {
-
+            OptionsWindowBottom optionsWindowBottom = new OptionsWindowBottom();
+            optionsWindowBottom.ShowDialog();
         }
     }
 }
