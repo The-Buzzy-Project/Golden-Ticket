@@ -23,6 +23,7 @@ namespace Golden_Ticket.Windows
         {
             CurrentVersionLabel.Text = "Current version: " + updateChecker.LauncherVersion;
             NewVersionLabel.Text = "New version: " + updateChecker.JsonVersion;
+            DownloadUpdate();
         }
 
         void DownloadUpdate()
