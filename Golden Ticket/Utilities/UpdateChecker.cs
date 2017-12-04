@@ -42,7 +42,6 @@ namespace Golden_Ticket.Utilities
 
                     // Get download URL
                     downloadURL = (string)o["url"];
-                    MessageBox.Show(downloadURL);
 
                     if(launcherVersion != jsonVersion)
                     {
