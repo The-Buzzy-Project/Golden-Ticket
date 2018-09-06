@@ -8,7 +8,7 @@ PC running Windows Vista or newer<sup>1</sup>. It does so by changing out files 
 which have been tested to work on a majority of systems with positive repeatable results. Some files are also added to
 make the game work \[better\], such as required fonts, cutscenes, and music.
 
-![Main Window Screenshot](https://i.imgur.com/QKlXWUy.png)
+![Main Window Screenshot](https://i.imgur.com/T18HR1y.png)
 
 ## Contributing
 
@@ -29,4 +29,4 @@ released under the GPL-2.0 license.
 
 ---
 
-###### <sup>1</sup> Not guarenteed. There are some cases of the game not running (or installing) on some systems for unknown reasons. This is something which cannot be fixed, and just simply means that system is 100% incompatible with the game for whatever reason.
+###### <sup>1</sup> Not guaranteed. There are some cases of the game not running (or installing) on some systems for unknown reasons. This is something which cannot be fixed, and just simply means that system is 100% incompatible with the game for whatever reason.
