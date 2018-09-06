@@ -61,12 +61,264 @@ namespace Golden_Ticket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &amp;Close.
+        /// </summary>
+        internal static string Button_Close {
+            get {
+                return ResourceManager.GetString("Button_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap coasterblurred {
             get {
                 object obj = ResourceManager.GetObject("coasterblurred", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locate your Theme Park World/Sim Theme Park executable..
+        /// </summary>
+        internal static string FolderBrowser_Description {
+            get {
+                return ResourceManager.GetString("FolderBrowser_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sim Theme Park.
+        /// </summary>
+        internal static string GameName_America {
+            get {
+                return ResourceManager.GetString("GameName_America", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Park World.
+        /// </summary>
+        internal static string GameName_Europe {
+            get {
+                return ResourceManager.GetString("GameName_Europe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to select a {0}/{1} folder to run this application..
+        /// </summary>
+        internal static string GetGame_Error_Message {
+            get {
+                return ResourceManager.GetString("GetGame_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Not Found.
+        /// </summary>
+        internal static string GetGame_Error_Title {
+            get {
+                return ResourceManager.GetString("GetGame_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gold Edition.
+        /// </summary>
+        internal static string GoldEdition {
+            get {
+                return ResourceManager.GetString("GoldEdition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/The-Buzzy-Project/Golden-Ticket/releases.
+        /// </summary>
+        internal static string GoldenTicket_ReleaseUrl {
+            get {
+                return ResourceManager.GetString("GoldenTicket_ReleaseUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.18.tar.xz.
+        /// </summary>
+        internal static string Patch_FakePatch_Url {
+            get {
+                return ResourceManager.GetString("Patch_FakePatch_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generic patch.
+        /// </summary>
+        internal static string Patch_Generic_Name {
+            get {
+                return ResourceManager.GetString("Patch_Generic_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/The-Buzzy-Project/Generic-Patch-Files/archive/master.zip.
+        /// </summary>
+        internal static string Patch_Generic_Url {
+            get {
+                return ResourceManager.GetString("Patch_Generic_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows 8+ compatibility patch.
+        /// </summary>
+        internal static string Patch_Win8_Name {
+            get {
+                return ResourceManager.GetString("Patch_Win8_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/The-Buzzy-Project/8-10-Configs/archive/master.zip.
+        /// </summary>
+        internal static string Patch_Win8_Url {
+            get {
+                return ResourceManager.GetString("Patch_Win8_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Vista/7 compatibility patch.
+        /// </summary>
+        internal static string Patch_WinVista_Name {
+            get {
+                return ResourceManager.GetString("Patch_WinVista_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patched.
+        /// </summary>
+        internal static string Patched {
+            get {
+                return ResourceManager.GetString("Patched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Downloading ({1}%).
+        /// </summary>
+        internal static string Patcher_Downloading {
+            get {
+                return ResourceManager.GetString("Patcher_Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Downloading.
+        /// </summary>
+        internal static string Patcher_DownloadingIndeterminate {
+            get {
+                return ResourceManager.GetString("Patcher_DownloadingIndeterminate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Failed.
+        /// </summary>
+        internal static string Patcher_Failed {
+            get {
+                return ResourceManager.GetString("Patcher_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Installing ({1}%).
+        /// </summary>
+        internal static string Patcher_Installing {
+            get {
+                return ResourceManager.GetString("Patcher_Installing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Installing.
+        /// </summary>
+        internal static string Patcher_InstallingIndeterminate {
+            get {
+                return ResourceManager.GetString("Patcher_InstallingIndeterminate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Done.
+        /// </summary>
+        internal static string Patcher_Success {
+            get {
+                return ResourceManager.GetString("Patcher_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could Not Export File.
+        /// </summary>
+        internal static string SpecsExport_Error_Title {
+            get {
+                return ResourceManager.GetString("SpecsExport_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        internal static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could Not Check for Updates.
+        /// </summary>
+        internal static string UpdateChecker_Error_Title {
+            get {
+                return ResourceManager.GetString("UpdateChecker_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An update for {0} is available. Would you like to download and install it now?.
+        /// </summary>
+        internal static string UpdateChecker_Message {
+            get {
+                return ResourceManager.GetString("UpdateChecker_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Available.
+        /// </summary>
+        internal static string UpdateChecker_Title {
+            get {
+                return ResourceManager.GetString("UpdateChecker_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/The-Buzzy-Project/Golden-Ticket/master/version.json.
+        /// </summary>
+        internal static string UpdateChecker_Url {
+            get {
+                return ResourceManager.GetString("UpdateChecker_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
     }

@@ -6,9 +6,9 @@
  
 using System.Windows.Forms;
 
-public class NotifyUser
+public static class NotifyUser
 {
-
+    // TODO: Should I keep this class? Letting MessageBox.Show do the task may be alright.
     /*
      * Valid NotifyUser types:
      *      Question
@@ -25,12 +25,8 @@ public class NotifyUser
      * 
      */
 
-    
-
-    public void Notify(IWin32Window thisWindow, string messageBoxTitle, string messageBoxBody, MessageBoxIcon type, MessageBoxButtons buttons)
+    public static void Notify(IWin32Window thisWindow, string messageBoxTitle, string messageBoxBody, MessageBoxIcon type, MessageBoxButtons buttons)
     {
-        
         MessageBox.Show(thisWindow, messageBoxBody, messageBoxTitle, buttons, type);
     }
-
 }

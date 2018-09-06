@@ -29,77 +29,89 @@
         private void InitializeComponent()
         {
             this.PatchingProgressbar = new System.Windows.Forms.ProgressBar();
-            this.downloadPercentageLabel = new System.Windows.Forms.Label();
-            this.bytesLabel = new System.Windows.Forms.Label();
-            this.ApplyPatchWorker = new System.ComponentModel.BackgroundWorker();
             this.patchingTitleLabel = new System.Windows.Forms.Label();
+            this.patchesTable = new System.Windows.Forms.TableLayoutPanel();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.patchesTable.SuspendLayout();
             this.SuspendLayout();
             // 
             // PatchingProgressbar
             // 
-            this.PatchingProgressbar.Location = new System.Drawing.Point(12, 64);
+            this.PatchingProgressbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PatchingProgressbar.Location = new System.Drawing.Point(9, 27);
             this.PatchingProgressbar.Name = "PatchingProgressbar";
-            this.PatchingProgressbar.Size = new System.Drawing.Size(528, 14);
+            this.PatchingProgressbar.Size = new System.Drawing.Size(304, 14);
             this.PatchingProgressbar.TabIndex = 0;
-            // 
-            // downloadPercentageLabel
-            // 
-            this.downloadPercentageLabel.AutoSize = true;
-            this.downloadPercentageLabel.BackColor = System.Drawing.Color.Transparent;
-            this.downloadPercentageLabel.ForeColor = System.Drawing.Color.White;
-            this.downloadPercentageLabel.Location = new System.Drawing.Point(270, 21);
-            this.downloadPercentageLabel.Name = "downloadPercentageLabel";
-            this.downloadPercentageLabel.Size = new System.Drawing.Size(21, 13);
-            this.downloadPercentageLabel.TabIndex = 1;
-            this.downloadPercentageLabel.Text = "0%";
-            // 
-            // bytesLabel
-            // 
-            this.bytesLabel.AutoSize = true;
-            this.bytesLabel.ForeColor = System.Drawing.Color.White;
-            this.bytesLabel.Location = new System.Drawing.Point(268, 39);
-            this.bytesLabel.Name = "bytesLabel";
-            this.bytesLabel.Size = new System.Drawing.Size(24, 13);
-            this.bytesLabel.TabIndex = 2;
-            this.bytesLabel.Text = "0/0";
-            // 
-            // ApplyPatchWorker
-            // 
-            this.ApplyPatchWorker.WorkerReportsProgress = true;
-            this.ApplyPatchWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ApplyPatchWorker_DoWork);
-            this.ApplyPatchWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ApplyPatchWorker_ProgressChanged);
-            this.ApplyPatchWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ApplyPatchWorker_RunWorkerCompleted);
             // 
             // patchingTitleLabel
             // 
             this.patchingTitleLabel.AutoSize = true;
-            this.patchingTitleLabel.ForeColor = System.Drawing.Color.White;
-            this.patchingTitleLabel.Location = new System.Drawing.Point(12, 9);
+            this.patchingTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.patchingTitleLabel.Location = new System.Drawing.Point(9, 6);
+            this.patchingTitleLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.patchingTitleLabel.Name = "patchingTitleLabel";
-            this.patchingTitleLabel.Size = new System.Drawing.Size(108, 13);
+            this.patchingTitleLabel.Size = new System.Drawing.Size(74, 15);
             this.patchingTitleLabel.TabIndex = 3;
-            this.patchingTitleLabel.Text = "Downloading patch...";
+            this.patchingTitleLabel.Text = "Please wait...";
+            // 
+            // patchesTable
+            // 
+            this.patchesTable.AutoSize = true;
+            this.patchesTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.patchesTable.ColumnCount = 1;
+            this.patchesTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.patchesTable.Controls.Add(this.patchingTitleLabel, 0, 0);
+            this.patchesTable.Controls.Add(this.PatchingProgressbar, 0, 1);
+            this.patchesTable.Controls.Add(this.cancelButton, 0, 2);
+            this.patchesTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.patchesTable.Location = new System.Drawing.Point(0, 0);
+            this.patchesTable.Name = "patchesTable";
+            this.patchesTable.Padding = new System.Windows.Forms.Padding(6);
+            this.patchesTable.RowCount = 3;
+            this.patchesTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.patchesTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.patchesTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.patchesTable.Size = new System.Drawing.Size(322, 119);
+            this.patchesTable.TabIndex = 4;
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.cancelButton.Location = new System.Drawing.Point(238, 68);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 4;
+            this.cancelButton.Text = "&Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // PatchingWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 90);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton = this.cancelButton;
+            this.ClientSize = new System.Drawing.Size(322, 119);
             this.ControlBox = false;
-            this.Controls.Add(this.patchingTitleLabel);
-            this.Controls.Add(this.bytesLabel);
-            this.Controls.Add(this.downloadPercentageLabel);
-            this.Controls.Add(this.PatchingProgressbar);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Controls.Add(this.patchesTable);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PatchingWindow";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Downloading patch...";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Installing patches...";
             this.Load += new System.EventHandler(this.DownloadingPatchWindow_Load);
+            this.patchesTable.ResumeLayout(false);
+            this.patchesTable.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,9 +120,8 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar PatchingProgressbar;
-        private System.Windows.Forms.Label downloadPercentageLabel;
-        private System.Windows.Forms.Label bytesLabel;
-        private System.ComponentModel.BackgroundWorker ApplyPatchWorker;
         private System.Windows.Forms.Label patchingTitleLabel;
+        private System.Windows.Forms.TableLayoutPanel patchesTable;
+        private System.Windows.Forms.Button cancelButton;
     }
 }

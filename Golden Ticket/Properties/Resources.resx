@@ -121,4 +121,88 @@
   <data name="coasterblurred" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\coasterblurred.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GoldenTicket_ReleaseUrl" xml:space="preserve">
+    <value>https://github.com/The-Buzzy-Project/Golden-Ticket/releases</value>
+  </data>
+  <data name="FolderBrowser_Description" xml:space="preserve">
+    <value>Locate your Theme Park World/Sim Theme Park executable.</value>
+  </data>
+  <data name="GameName_America" xml:space="preserve">
+    <value>Sim Theme Park</value>
+  </data>
+  <data name="GameName_Europe" xml:space="preserve">
+    <value>Theme Park World</value>
+  </data>
+  <data name="GoldEdition" xml:space="preserve">
+    <value>Gold Edition</value>
+  </data>
+  <data name="Patched" xml:space="preserve">
+    <value>Patched</value>
+  </data>
+  <data name="Patch_Generic_Name" xml:space="preserve">
+    <value>Generic patch</value>
+  </data>
+  <data name="Patch_Win8_Name" xml:space="preserve">
+    <value>Windows 8+ compatibility patch</value>
+  </data>
+  <data name="Patch_WinVista_Name" xml:space="preserve">
+    <value>Windows Vista/7 compatibility patch</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Patcher_DownloadingIndeterminate" xml:space="preserve">
+    <value>{0} - Downloading</value>
+  </data>
+  <data name="Patcher_Downloading" xml:space="preserve">
+    <value>{0} - Downloading ({1}%)</value>
+  </data>
+  <data name="Patcher_Installing" xml:space="preserve">
+    <value>{0} - Installing ({1}%)</value>
+  </data>
+  <data name="Patcher_Success" xml:space="preserve">
+    <value>{0} - Done</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
+  <data name="UpdateChecker_Message" xml:space="preserve">
+    <value>An update for {0} is available. Would you like to download and install it now?</value>
+  </data>
+  <data name="UpdateChecker_Title" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="Patcher_Failed" xml:space="preserve">
+    <value>{0} - Failed</value>
+  </data>
+  <data name="Patcher_InstallingIndeterminate" xml:space="preserve">
+    <value>{0} - Installing</value>
+  </data>
+  <data name="Patch_FakePatch_Url" xml:space="preserve">
+    <value>https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.18.tar.xz</value>
+  </data>
+  <data name="Patch_Generic_Url" xml:space="preserve">
+    <value>https://github.com/The-Buzzy-Project/Generic-Patch-Files/archive/master.zip</value>
+  </data>
+  <data name="Patch_Win8_Url" xml:space="preserve">
+    <value>https://github.com/The-Buzzy-Project/8-10-Configs/archive/master.zip</value>
+  </data>
+  <data name="UpdateChecker_Url" xml:space="preserve">
+    <value>https://raw.githubusercontent.com/The-Buzzy-Project/Golden-Ticket/master/version.json</value>
+  </data>
+  <data name="UpdateChecker_Error_Title" xml:space="preserve">
+    <value>Could Not Check for Updates</value>
+  </data>
+  <data name="SpecsExport_Error_Title" xml:space="preserve">
+    <value>Could Not Export File</value>
+  </data>
+  <data name="GetGame_Error_Message" xml:space="preserve">
+    <value>You need to select a {0}/{1} folder to run this application.</value>
+  </data>
+  <data name="GetGame_Error_Title" xml:space="preserve">
+    <value>Game Not Found</value>
+  </data>
 </root>
