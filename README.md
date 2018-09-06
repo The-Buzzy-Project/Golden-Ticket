@@ -8,7 +8,7 @@ PC running Windows Vista or newer<sup>1</sup>. It does so by changing out files 
 which have been tested to work on a majority of systems with positive repeatable results. Some files are also added to
 make the game work \[better\], such as required fonts, cutscenes, and music.
 
-![Main Window Screenshot](https://i.imgur.com/T18HR1y.png)
+![Main Window Screenshot](https://i.imgur.com/iPzMznC.png)
 
 ## Contributing
 
