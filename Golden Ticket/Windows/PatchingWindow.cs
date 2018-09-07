@@ -1,286 +1,256 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
-using System.IO.Compression;
-using System.IO;
+using Golden_Ticket.Classes;
+using Golden_Ticket.Patches;
+using Golden_Ticket.Properties;
+using Golden_Ticket.Utilities;
 
 namespace Golden_Ticket.Windows
 {
+    /// <summary>
+    /// Gets, installs and reports on a list of patches specified by the caller.
+    /// </summary>
     public partial class PatchingWindow : Form
     {
+        // TODO: Document this form.
+        private Game TpwGame { get; }
+        private Patch[] Patches { get; }
+        private Dictionary<Patch, int> DownloadProgress = new Dictionary<Patch, int>();
+        private Dictionary<Patch, int> InstallProgress = new Dictionary<Patch, int>();
+        private Dictionary<Patch, CancellationTokenSource> CancelTokens = new Dictionary<Patch, CancellationTokenSource>();
+        private Dictionary<Patch, Label> Labels = new Dictionary<Patch, Label>();
 
-        bool applyingPatch;
-        Exception exForError;
-        int errorCode;
-        PathUtils pathUtils = new PathUtils();
-        NotifyUser notifyUser = new NotifyUser();
-        Errors errors = new Errors();
-        GameInfo gameInfo = new GameInfo();
-        // 1 == Vista/7
-        // 2 == 8/8.1/10
-        public int patchToDownload;
-
-        public PatchingWindow()
+        public PatchingWindow(Game game, params Patch[] patches)
         {
+            // TODO: Additional testing for elevated process.
+            TpwGame = game;
+            Patches = patches;
             InitializeComponent();
+            if (!game.IsGameDirWritable)
+            {
+                // This prompt only shows if UAC is active
+                // If it's not, we can't elevate
+                if (!MachineInfo.IsAdministrator && MachineInfo.IsUacEnabled)
+                {
+                    if (MessageBox.Show(
+                            "Your game folder does not appear to be writable. Would you like to try relaunching as an administrator?",
+                            "Could Not Install Patches", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) ==
+                        DialogResult.Yes)
+                    {
+                        Permissions.RunElevated("/i");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Your game folder does not appear to be writable. Ensure that you have write access to your Theme Park World folder and try again.",
+                        "Could Not Install Patches", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                // Close immediately
+                // TODO: Fix flicker.
+                Load -= DownloadingPatchWindow_Load;
+                Load += (s, e) => Close();
+            }
         }
 
         private void DownloadingPatchWindow_Load(object sender, EventArgs e)
         {
-            // Keep it fresh in the bedroom
-            if (File.Exists(pathUtils.goldenTicketDownloadsFolder + "\\GenericPatch.zip"))
+            // Add progress labels to table
+            patchesTable.SuspendLayout();
+            foreach (Patch patch in Patches)
             {
-                File.Delete(pathUtils.goldenTicketDownloadsFolder + "\\GenericPatch.zip");
+                StartDownload(patch);
             }
+            patchesTable.ResumeLayout();
+        }
 
-            if(File.Exists(pathUtils.goldenTicketDownloadsFolder + "810Configs.zip"))
-            {
-                File.Delete(pathUtils.goldenTicketDownloadsFolder + "810Configs.zip");
-            }
-
-            if(Directory.Exists(pathUtils.goldenTicketTempFolder + "\\Generic-Patch-Files-master"))
-            {
-                Directory.Delete(pathUtils.goldenTicketTempFolder + "\\Generic-Patch-Files-master", true);
-            }
-
-            if(Directory.Exists(pathUtils.goldenTicketTempFolder + "\\8-10-Configs-master"))
-            {
-                Directory.Delete(pathUtils.goldenTicketTempFolder + "\\8-10-Configs-master", true);
-            }
-            // Done with the febreeze!
-
-            // Let's get ready to download the patch zip from Github
-            WebClient client = new WebClient();
-            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-
-            bytesLabel.Visible = true;
-            patchingTitleLabel.Text = "Downloading patch...";
-
+        private void StartDownload(Patch patch)
+        {
+            AddPatchLabelToTable(patch);
+            // Get event handlers for progress and success
+            patch.FileProgressChanged += DownloadProgressChanged;
+            patch.FileDownloaded += DownloadFileCompleted;
+            DownloadProgress.Add(patch, 0);
+            InstallProgress.Add(patch, 0);
+            CancelTokens.Add(patch, new CancellationTokenSource());
             // Starts the download
+            patch.Download(CancelTokens[patch].Token);
+        }
 
-            patchCheck:
-            if(patchToDownload == 1)
+        private void StartInstall(Patch patch)
+        {
+            SetLabelText(patch, GetInstallLabelText(patch));
+            patch.InstallProgressChanged += InstallProgressChanged;
+            patch.InstallComplete += InstallCompleted;
+            patch.InstallAsync(TpwGame.GamePath, CancelTokens[patch].Token);
+        }
+
+        #region Create/set label
+        private Label CreatePatchLabel(Patch patch) => new Label()
+        {
+            AutoSize = true,
+            FlatStyle = FlatStyle.System,
+            Margin = new Padding(3, 0, 3, 0),
+            Text = GetDownloadLabelText(patch)
+        };
+
+        private void AddPatchLabelToTable(Patch patch)
+        {
+            Label label = CreatePatchLabel(patch);
+            patchesTable.RowStyles.Insert(1, new RowStyle(SizeType.AutoSize));
+            patchesTable.Controls.Add(label, 0, 1);
+            Labels.Add(patch, label);
+        }
+
+        private void SetLabelText(Patch patch, string text)
+        {
+            Label label = GetLabel(patch);
+            if (label != null) label.Text = text;
+        }
+
+        private Label GetLabel(Patch patch)
+        {
+            Labels.TryGetValue(patch, out Label label);
+            return label;
+        }
+
+        private string GetDownloadLabelText(Patch patch) => string.Format(Resources.Patcher_DownloadingIndeterminate, patch.Name);
+        private string GetDownloadLabelText(Patch patch, double progress) => string.Format(
+            Resources.Patcher_Downloading, patch.Name,
+            Math.Round(progress, 0, MidpointRounding.AwayFromZero).ToString(CultureInfo.CurrentCulture));
+
+        private static string GetInstallLabelText(Patch patch) =>
+            string.Format(Resources.Patcher_InstallingIndeterminate, patch.Name);
+
+        private static string GetInstallLabelText(Patch patch, int progress) =>
+            string.Format(Resources.Patcher_Installing, patch.Name, progress);
+        #endregion
+
+        #region Download event handlers
+        private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            UpdateDownloadProgress((Patch)e.UserState, e.BytesReceived, e.TotalBytesToReceive);
+        }
+
+        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Patch patch = (Patch)e.UserState;
+            if (e.Error == null)
             {
-                // Download Vista/7 patch
-                client.DownloadFileAsync(new Uri("https://github.com/The-Buzzy-Project/Generic-Patch-Files/archive/master.zip"), pathUtils.goldenTicketDownloadsFolder); // OS generic patch files
+                if (e.Cancelled)
+                {
+                    DownloadProgress[patch] = 100;
+                    UpdateProgressBar();
+                }
+                else
+                {
+                    DownloadProgress[patch] = 100;
+                    UpdateProgressBar();
+                    StartInstall(patch);
+                }
             }
             else
             {
-                if(patchToDownload == 2)
-                {
-                    // Download Vista/7 patch
-                    client.DownloadFileAsync(new Uri("https://github.com/The-Buzzy-Project/Generic-Patch-Files/archive/master.zip"), pathUtils.goldenTicketDownloadsFolder + "\\GenericPatch.zip"); // OS generic patch files
-                    // Download 8/8.1/10 graphics configs
-                    //client.DownloadFileAsync(new Uri("https://github.com/The-Buzzy-Project/8-10-Configs/archive/master.zip"), pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip"); // 8/8.1/10 graphics configs
-                }
-                else
-                {
-                    MessageBox.Show("Um?");
-                    MachineInfo machineInfo = new MachineInfo();
-                    string winVer = machineInfo.WindowsVersion();
+                TaskFailed(patch, e.Error.Message);
+            }
+        }
+        #endregion
 
-                    if (winVer.Contains("Windows Vista") || winVer.Contains("Windows 7"))
-                    {
-                        // Patch for Vista/7
-                        patchToDownload = 1;
-                        goto patchCheck;
-                    }
+        #region Install event handlers
+        private void InstallProgressChanged(object sender, InstallEventArgs e)
+        {
+            Patch patch = (Patch) sender;
+            SetLabelText(patch, GetInstallLabelText(patch, e.Progress));
+            InstallProgress[patch] = e.Progress;
+            UpdateProgressBar();
+        }
+        
+        private void InstallCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Patch patch = (Patch) sender;
+            InstallProgress[patch] = 100;
+            UpdateProgressBar();
+            SetLabelText(patch, string.Format(Resources.Patcher_Success, patch.Name));
+        }
+        #endregion
 
-                    if (winVer.Contains("Windows 8") || winVer.Contains("Windows 8.1") || winVer.Contains("Windows 10"))
-                    {
-                        // Patch for 8/8.1/10
-                        patchToDownload = 2;
-                        goto patchCheck;
-                    }
+        private void TaskFailed(Patch patch, string reason)
+        {
+            DownloadProgress[patch] = 100;
+            InstallProgress[patch] = 100;
+            UpdateProgressBar();
+            Label label = GetLabel(patch);
+            label.Text = string.Format(Resources.Patcher_Failed, patch.Name);
+            label.Cursor = Cursors.Help;
+            ToolTip toolTip = new ToolTip()
+            {
+                ToolTipIcon = ToolTipIcon.Error,
+                IsBalloon = true,
+                ToolTipTitle = "The patch failed to install"
+            };
+            toolTip.SetToolTip(label, reason);
+        }
 
-                    // Just in case there's some freak accident where this doesn't return ANY of our expected Windows versions, let's flip out!
-                    if (!winVer.Contains("Windows Vista") & !winVer.Contains("Windows 7") & !winVer.Contains("Windows 8")
-                        & !winVer.Contains("Windows 8.1") & !winVer.Contains("Windows 10"))
-                    {
-                        // Set error code to 3 and stop the launcher
-                        errorCode = 3;
-                        MainWindow mw = new MainWindow();
-                        mw.LauncherStartup.CancelAsync();
-                    }
-                    goto patchCheck;
-                }
+        private void AllTasksComplete()
+        {
+            patchingTitleLabel.Text = "Finished.";
+            cancelButton.Tag = "close";
+            cancelButton.Text = Resources.Button_Close;
+        }
+
+        #region Download progress helpers
+        private void UpdateDownloadProgress(Patch patch, long bytesReceived, long bytesTotal)
+        {
+            int percentage = GetDownloadProgress(bytesReceived, bytesTotal);
+            DownloadProgress[patch] = percentage;
+            UpdateProgressBar();
+            SetLabelText(patch, GetDownloadLabelText(patch, percentage));
+        }
+
+        private int GetDownloadProgress(long bytesReceived, long bytesTotal) =>
+            (bytesTotal != -1) ? (int) (((double) bytesReceived / bytesTotal) * 100) : 0;
+#endregion
+
+        private void UpdateProgressBar()
+        {
+            int progress = 0;
+            
+            foreach (int i in DownloadProgress.Values)
+            {
+                progress += i;
+            }
+
+            foreach (int i in InstallProgress.Values)
+            {
+                progress += i;
+            }
+            
+            PatchingProgressbar.Value = (progress / DownloadProgress.Count) / 2;
+            if (progress == 100 * (DownloadProgress.Count * 2))
+            {
+                AllTasksComplete();
             }
         }
 
-        private void InstallPatch()
+        private void cancelButton_Click(object sender, EventArgs e)
         {
-                patchingTitleLabel.Text = "Preparing patch...";
-                PatchingProgressbar.Value = 0;
-                bytesLabel.Visible = false;
-                ApplyPatchWorker.RunWorkerAsync();
-                //MessageBox.Show("Install Vista/7");
-        }
-
-        private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (patchToDownload == 2)
+            if ((string) cancelButton.Tag == "close")
             {
-                if (!System.IO.File.Exists(pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip"))
-                {
-                    WebClient client = new WebClient();
-                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                    client.DownloadFileAsync(new Uri("https://github.com/The-Buzzy-Project/8-10-Configs/archive/master.zip"), pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip"); // 8/8.1/10 graphics configs
-                }
-                else
-                {
-                    InstallPatch();
-                }
+                Close();
             }
             else
             {
-                InstallPatch();
-            }
-        }
-
-        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            double bytesIn = double.Parse(e.BytesReceived.ToString());
-            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
-            double percentage = bytesIn / totalBytes * 100;
-
-            //PatchingProgressbar.Value = int.Parse(Math.Truncate(percentage).ToString()); <--- CAUSES A RANDOM ERROR ABOUT PROGRESSBAR VALUE BEING TOO HIGH/LOW
-            PatchingProgressbar.Value = e.ProgressPercentage; // Always use e.ProgressPercentage for this!
-            downloadPercentageLabel.Text = PatchingProgressbar.Value.ToString() + "%";
-            bytesLabel.Text = bytesIn + "/" + totalBytes;
-        }
-
-        private void ApplyPatchWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-#pragma warning disable CS0162 // Unreachable code detected
-            for (int i = 0; i < 100; i++) // The code needs to go in here so that we can get progress reports
-#pragma warning restore CS0162 // Unreachable code detected
-            {
-                ApplyPatchStep1();
-                ApplyPatchWorker.ReportProgress(i);
-                if (ApplyPatchWorker.CancellationPending) { e.Cancel = true; return; } // Check if we need to cancel
-                applyingPatch = true;
-                ApplyPatchWorker.ReportProgress(i);
-                ApplyPatchStep2();
-                ApplyPatchWorker.ReportProgress(i);
-                if (ApplyPatchWorker.CancellationPending) { e.Cancel = true; return; } // Check if we need to cancel
-                return;
-            }
-        }
-        void ApplyPatchStep1()
-        {
-            // Extract the zip files to our Temp directory
-            try
-            {
-                ZipFile.ExtractToDirectory(pathUtils.goldenTicketDownloadsFolder + "\\GenericPatch.zip", pathUtils.goldenTicketTempFolder);
-
-                if(File.Exists(pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip"))
+                foreach (Patch patch in Patches)
                 {
-                    // It appears we're patching for 8/8.1/10 so let's prepare that as well...
-                    ZipFile.ExtractToDirectory(pathUtils.goldenTicketDownloadsFolder + "\\810Configs.zip", pathUtils.goldenTicketTempFolder);
-                }
-                else
-                {
-                    // We don't have the 8/8.1/10 configs in the Downloads folder, continue
-                    return;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                exForError = ex;
-                errorCode = 4;
-                ApplyPatchWorker.CancelAsync();
-            }
-        }
-
-        void ApplyPatchStep2()
-        {
-            string gtTempFolder;
-            gtTempFolder = pathUtils.goldenTicketTempFolder;
-            string gtGenericPatchDirectory;
-            gtGenericPatchDirectory = pathUtils.goldenTicketTempFolder + "\\Generic-Patch-Files-master";
-            // Copy all our patch files located in the Temp directory into the game directory
-            string gt810ConfigsDirectory;
-            gt810ConfigsDirectory = pathUtils.goldenTicketTempFolder + "\\8-10-Configs-master";
-            try
-            {
-                string gameDirectory;
-                gameDirectory = gameInfo.GetInstallLocationFromReg();
-                foreach (var file in Directory.GetFiles(gtGenericPatchDirectory))
-                {
-                    File.Copy(file, Path.Combine(gameDirectory, Path.GetFileName(file)), true);
-                }
-
-                foreach (var file in Directory.GetFiles(gtGenericPatchDirectory + "\\data"))
-                {
-                    File.Copy(file, Path.Combine(gameDirectory + "\\data", Path.GetFileName(file)), true);
-                }
-
-                if (!Directory.Exists(gameDirectory + "\\data\\tpwfnt"))
-                {
-                    Directory.CreateDirectory(gameDirectory + "\\data\\tpwfnt");
-                }
-
-                foreach (var file in Directory.GetFiles(gtGenericPatchDirectory + "\\data\\tpwfnt"))
-                {
-                    File.Copy(file, Path.Combine(gameDirectory + "\\data\\tpwfnt", Path.GetFileName(file)), true);
-                }
-
-                if (Directory.Exists(gt810ConfigsDirectory))
-                {
-                    try
-                    {
-                        foreach (var file in Directory.GetFiles(gt810ConfigsDirectory + "\\data"))
-                        {
-                            File.Copy(file, Path.Combine(gameDirectory + "\\data", Path.GetFileName(file)), true);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        notifyUser.Notify(this, "Unexpected error!",
-                                            "An unexpected error has occured. Who? What? When? Where? Why? How? Not sure. Screenshot this message box and send it to the developer please."
-                                            + Environment.NewLine + Environment.NewLine + ex.ToString(),
-                                            MessageBoxIcon.Error, MessageBoxButtons.OK);
-                    }
-                }
-                else
-                {
-                    // We're not patching for 8/8.1/10 so return. We're done.
-                    return;
+                    CancelTokens[patch].Cancel();
                 }
             }
-            catch(Exception ex)
-            {
-                exForError = ex;
-                errorCode = 4;
-                ApplyPatchWorker.CancelAsync();
-            }
-        }
-
-        private void ApplyPatchWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled == true)
-            {
-                //LauncherProgressBar.Style = ProgressBarStyle.Continuous;
-                errors.ReportCorrectErrorCodeToUser(errorCode, this, exForError);
-                //ProgressLabel.Text = "The developer is stupid and screwed up the launcher! (Error " + errorCode + ")";
-            }
-            else
-            {
-                patchingTitleLabel.Text = "Done patching!";
-                this.Close();
-            }
-        }
-
-        private void ApplyPatchWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if(applyingPatch == true)
-            {
-                patchingTitleLabel.Text = "Applying patch...";
-            }
+            
         }
     }
 }

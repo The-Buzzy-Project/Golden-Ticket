@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Golden_Ticket</RootNamespace>
     <AssemblyName>Golden Ticket</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -32,10 +32,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,19 +56,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utilities\Errors.cs" />
-    <Compile Include="Utilities\UpdateChecker.cs" />
+    <Compile Include="Classes\Downloadable.cs" />
+    <Compile Include="Classes\Game.cs" />
+    <Compile Include="Patches\GenericPatch.cs" />
+    <Compile Include="Patches\Win8Patch.cs" />
+    <Compile Include="Patches\Patch.cs" />
+    <Compile Include="Classes\Update.cs" />
+    <Compile Include="Patches\WinVistaPatch.cs" />
+    <Compile Include="Classes\UpdateChecker.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Utilities\Permissions.cs" />
+    <Compile Include="Utilities\PatchList.cs" />
+    <Compile Include="Windows\FileDialogs.cs" />
     <Compile Include="Windows\OptionsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\OptionsWindow.Designer.cs">
       <DependentUpon>OptionsWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\OptionsWindowBottom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\OptionsWindowBottom.Designer.cs">
-      <DependentUpon>OptionsWindowBottom.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\PatchingWindow.cs">
       <SubType>Form</SubType>
@@ -80,33 +88,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\GameInfo.cs" />
     <Compile Include="Utilities\MachineInfo.cs" />
     <Compile Include="Utilities\NotifyUser.cs" />
-    <Compile Include="Utilities\PathUtils.cs" />
-    <Compile Include="Windows\PatchingWindowBottom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\PatchingWindowBottom.Designer.cs">
-      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
-    </Compile>
     <Compile Include="Windows\UpdateWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\UpdateWindow.Designer.cs">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\UpdateWindowBottom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\UpdateWindowBottom.Designer.cs">
-      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Windows\OptionsWindow.resx">
       <DependentUpon>OptionsWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\OptionsWindowBottom.resx">
-      <DependentUpon>OptionsWindowBottom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\PatchingWindow.resx">
       <DependentUpon>PatchingWindow.cs</DependentUpon>
@@ -124,16 +115,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Windows\PatchingWindowBottom.resx">
-      <DependentUpon>PatchingWindowBottom.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\UpdateWindow.resx">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\UpdateWindowBottom.resx">
-      <DependentUpon>UpdateWindowBottom.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -151,4 +139,7 @@
     <None Include="Resources\coasterblurred.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)packages\ILMerge.2.14.1208\tools\ilmerge.exe" /target:winexe /out:gticket.exe "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)$(OutDir)Newtonsoft.Json.dll"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

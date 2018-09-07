@@ -1,46 +1,58 @@
-﻿using Golden_Ticket.Utilities;
-using System;
+﻿using System;
 using System.Net;
 using System.ComponentModel;
-using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
+using Golden_Ticket.Classes;
+using Golden_Ticket.Properties;
 
 namespace Golden_Ticket.Windows
 {
+    /// <summary>
+    /// Gets and displays progress for updates to Golden Ticket.
+    /// </summary>
     public partial class UpdateWindow : Form
     {
-        UpdateChecker updateChecker = new UpdateChecker();
-        PathUtils pathUtils = new PathUtils();
+        private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
+        // TODO: Document this form.
+        private Update UpdateData { get; }
 
-        public UpdateWindow()
+        public UpdateWindow(Update update)
         {
+            UpdateData = update;
             InitializeComponent();
         }
 
         private void UpdateWindow_Load(object sender, EventArgs e)
         {
-            CurrentVersionLabel.Text = "Current version: " + updateChecker.LauncherVersion;
-            NewVersionLabel.Text = "New version: " + updateChecker.JsonVersion;
+            CurrentVersionLabel.Text = "Current version: " + UpdateData.LauncherVersion;
+            NewVersionLabel.Text = "New version: " + UpdateData.NewVersion;
             DownloadUpdate();
         }
 
         void DownloadUpdate()
         {
-            WebClient client = new WebClient();
-            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-
-            client.DownloadFileAsync(new Uri(updateChecker.DownloadURL), pathUtils.goldenTicketTempFolder + "\\Update.exe");
+            UpdateData.FileProgressChanged += client_DownloadProgressChanged;
+            UpdateData.FileDownloaded += client_DownloadFileCompleted;
+            UpdateData.Download(_cancel.Token);
         }
 
         private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             // Start the installer
-            Process.Start(pathUtils.goldenTicketTempFolder + "\\Update.exe" + "/S");
-            // Close the launcher
-            Application.Exit();
+            try
+            {
+                UpdateData.Install();
+                // Close the launcher
+                Application.Exit();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    "There was a problem installing this update. If the problem persists, try manually downloading it from:" +
+                    Environment.NewLine + Environment.NewLine + Resources.UpdateChecker_Url,
+                    "Update Failed to Install", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

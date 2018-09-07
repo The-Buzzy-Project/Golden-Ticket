@@ -1,180 +1,124 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 using Golden_Ticket.Utilities;
-using System.Management;
+using Golden_Ticket.Classes;
+using Golden_Ticket.Properties;
 
 namespace Golden_Ticket.Windows
 {
     public partial class OptionsWindow : Form
     {
-        GameInfo gameInfo = new GameInfo();
-        UpdateChecker updateChecker = new UpdateChecker();
-        MachineInfo machineInfo = new MachineInfo();
-        PathUtils pathUtils = new PathUtils();
-        string cpuName;
-        string winVer;
-        string gpuName;
-        string arch;
-        ulong ramSize;
-        List<string> specsExport;
+        // TODO: Document this form.
+        private Game TpwGame { get; }
+        private string _cpuName;
+        private string _winVer;
+        private string _gpuName;
+        private string _arch;
+        private ulong _ramSize;
 
-        public OptionsWindow()
+        public OptionsWindow(Game game)
         {
+            TpwGame = game;
             InitializeComponent();
         }
 
         private void OptionsWindow_Load(object sender, EventArgs e)
         {
-            specsExport = new List<string>();
-            launcherVersionLabel.Text = "Ver. " + updateChecker.LauncherVersion;
-            gameLocationLabel.Text = gameInfo.GetInstallLocationFromReg();
+            launcherVersionLabel.Text = "Ver. " + Application.ProductVersion;
+            gameLocationTextBox.Text = TpwGame.GamePath;
+            AutoUpdateCheckBox.Checked = Settings.Default.CheckForUpdatesOnStart;
+
+            nameLabel.Text = $"{Application.ProductName} {Application.ProductVersion}";
+            descriptionLabel.Text = "Enables Theme Park World to run on modern versions of Windows.";
             backgroundWorker1.RunWorkerAsync();
         }
 
         private void gameDirButton_Click(object sender, EventArgs e)
         {
-            Process.Start(gameInfo.GetInstallLocationFromReg());
+            gameLocationTextBox.Text = FileDialogs.GetTpwFolder() ?? gameLocationTextBox.Text;
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void launcherExitButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        void GetGPU()
-        {
-            ManagementObjectSearcher searcher
-     = new ManagementObjectSearcher("SELECT * FROM Win32_DisplayConfiguration");
-
-            foreach (ManagementObject mo in searcher.Get())
-            {
-                foreach (PropertyData property in mo.Properties)
-                {
-                    if (property.Name == "Description")
-                    {
-                        gpuName = property.Value.ToString();
-                    }
-                }
-            }
-        }
-
-        public static string SendBackProcessorName()
-        {
-            ManagementObjectSearcher mosProcessor = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
-            string Procname = null;
-
-            foreach (ManagementObject moProcessor in mosProcessor.Get())
-            {
-                if (moProcessor["name"] != null)
-                {
-                    Procname = moProcessor["name"].ToString();
-
-                }
-
-            }
-
-            return Procname;
-        }
-
+        
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            cpuName = SendBackProcessorName();
-            winVer = machineInfo.WindowsVersion();
-            GetGPU();
-            ramSize = GetTotalMemoryInBytes();
+            _cpuName = MachineInfo.ProcessorName;
+            _arch = MachineInfo.Arch;
+            _winVer = MachineInfo.WindowsVersion;
+            _gpuName = MachineInfo.GpuName;
+            _ramSize = MachineInfo.TotalMemory;
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            osLabel.Text = "OS: " + winVer;
-            bool is64Bit = Environment.Is64BitOperatingSystem;
-            if (is64Bit == true)
-            {
-                arch = "x64";
-                archLabel.Text = "Arch: x64";
-            }
-            else
-            {
-                arch = "x86";
-                archLabel.Text = "Arch: x86";
-            }
-            gpuLabel.Text = "GPU: " + gpuName;
-            cpuLabel.Text = "CPU: " + cpuName;
-            ramLabel.Text = "RAM: " + FormatBytes(ramSize);
-            specsExportButton.Visible = true;
-        }
-
-        static ulong GetTotalMemoryInBytes()
-        {
-            return new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
-        }
-
-        private static string FormatBytes(ulong bytes)
-        {
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int i;
-            double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
-            {
-                dblSByte = bytes / 1024.0;
-            }
-
-            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            // TODO: Switch to async tasks so everything appears when it's ready.
+            osLabel.Text = _winVer;
+            archLabel.Text = _arch;
+            gpuLabel.Text = _gpuName;
+            cpuLabel.Text = _cpuName;
+            ramLabel.Text = MachineInfo.FormatBytesUnsafe(_ramSize);
+            specsExportButton.Enabled = true;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            // Add system and some launcher info to the List
-            // Also format with markdown to make it easier to read on Github/reddit...
-            specsExport.Add("## Auto-Generated by Golden Ticket at " + DateTime.Now);
-            specsExport.Add("");
-            specsExport.Add("---");
-            specsExport.Add("");
-            specsExport.Add("* **OS:** " + winVer + arch);
-            specsExport.Add("");
-            specsExport.Add("* **CPU:** " + cpuName);
-            specsExport.Add("");
-            specsExport.Add("* **GPU:** " + gpuName);
-            specsExport.Add("");
-            specsExport.Add("* **RAM:** " + FormatBytes(ramSize));
-            specsExport.Add("");
-            specsExport.Add("* **Golden Ticket version:** " + updateChecker.LauncherVersion);
-            // Conver to array
-            specsExport.ToArray();
-            try
+            SaveFileDialog sfd = new SaveFileDialog()
             {
-                System.IO.File.WriteAllLines(pathUtils.goldenTicketDocumentsFolder + "\\SystemSpecs.txt", specsExport);
-            }
-            catch (Exception ex)
+                AddExtension = true,
+                AutoUpgradeEnabled = true,
+                CheckPathExists = true,
+                DefaultExt = "txt",
+                FileName = "SystemSpecs",
+                Filter = "Text files (*.txt)|*.txt",
+                InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString()
+            };
+            while (true)
             {
-                MessageBox.Show("Unknown error while exporting system specs. Please show this to the developer."
-                    + Environment.NewLine + Environment.NewLine + ex.ToString());
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        File.WriteAllLines(sfd.FileName, MachineInfo.ToFileOutput());
+                        break;
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        MessageBox.Show("The text file could not be written. The chosen folder may be read-only.",
+                            Resources.SpecsExport_Error_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            "Unknown error while exporting system specs. Please show this to the developer." +
+                            Environment.NewLine + Environment.NewLine + ex, Resources.SpecsExport_Error_Title,
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                return;
             }
-            DialogResult dialogResult = MessageBox.Show("Your system specs were successfully exported to a text file."
-                + Environment.NewLine + "Location: " + pathUtils.goldenTicketDocumentsFolder + "\\SystemSpecs.txt"
-                + Environment.NewLine + "Would you like to open the folder?", "System Specs were exported!",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if(dialogResult == DialogResult.Yes)
+
+            if (MessageBox.Show("Your system specs were successfully exported to a text file."
+                               + Environment.NewLine + "Location: " + sfd.FileName
+                               + Environment.NewLine + "Would you like to open the folder?", "System Specs were exported!",
+                   MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
-                Process.Start(pathUtils.goldenTicketDocumentsFolder);
+                Process.Start(Path.GetDirectoryName(sfd.FileName));
             }
-            else
-            {
-                // Nuffin.
-            }
+        }
+
+        private void btnOK_Click(object sender, EventArgs e) { Save(); Close(); }
+
+        /// <summary>
+        /// Saves all settings to the application settings database.
+        /// </summary>
+        private void Save()
+        {
+            TpwGame.GamePath = gameLocationTextBox.Text; // Path to game
+            Settings.Default.CheckForUpdatesOnStart = AutoUpdateCheckBox.Checked; // Check for updates on application launch
+            Settings.Default.Save();
         }
     }
 }
