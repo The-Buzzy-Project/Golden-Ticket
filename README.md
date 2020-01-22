@@ -22,10 +22,10 @@ If you would like to contribute and make modifications to the launcher, here are
 6. Create a pull request with this repo, with a ***detailed*** description of what your changes are, and what they effect. ***If your pull request isn't easy to understand and detailed, it will not be merged.***
 
 
-## [License](https://github.com/The-Buzzy-Project/Golden-Ticket/blob/master/LICENSE)
+## [License](https://github.com/The-Buzzy-Project/Golden-Ticket/blob/master/COPYING)
 
 Currently, this repo (and all other repos from The Buzzy Project (TBP) along with it's included files are
-released under the GPL-2.0 license.
+released under the GPL-2.0 license, unless otherwise stated.
 
 ---
 
