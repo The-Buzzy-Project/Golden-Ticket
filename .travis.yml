@@ -1,6 +1,0 @@
-# Travis-CI configuration file
-
-language: csharp
-solution: Golden_Ticket.sln
-
-# Should I add more things here? Probably, but I'm a noob so I won't.
