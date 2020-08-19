@@ -7,11 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Golden_Ticket.Properties;
+using Octodiff.Core;
 
 namespace Golden_Ticket.Windows
 {
     public partial class PatcherWindow : Form
     {
+        bool infoCorrect;
+
+        // Setup for multiple pages on one window
+        List<Panel> listPanel = new List<Panel>();
+        int pageIndex;
+        int winWidth = 328;
+        int winHeight = 352;
+
 
         // Let us use the MachineInfo class
         MachineInfo machineInfo = new MachineInfo();
@@ -39,6 +49,21 @@ namespace Golden_Ticket.Windows
         // This will let us make changes BEFORE we show the form to the user
         private void PatcherWindow_Load(object sender, EventArgs e)
         {
+            //Add panels to list
+            listPanel.Add(setupPanel0);
+            listPanel.Add(setupPanel1);
+            // listPanel.Add(panel3);
+            listPanel[pageIndex].BringToFront(); // Bring first page up?
+
+            // Set window size since we have it huge in the VS editor
+            this.Size = new Size(winWidth, winHeight);
+            // Make panels fill the window
+            setupPanel0.Dock = DockStyle.Fill;
+            setupPanel1.Dock = DockStyle.Fill;
+
+
+
+
             // Disable buttons for now, since we don't have any info loaded yet
             wrongInfoButton.Enabled = false;
             rightInfoButton.Enabled = false;
@@ -116,6 +141,34 @@ namespace Golden_Ticket.Windows
             // User can see the info, let them decide.
             wrongInfoButton.Enabled = true;
             rightInfoButton.Enabled = true;
+        }
+
+        private void rightInfoButton_Click(object sender, EventArgs e)
+        {
+            // Probably a better way to do this, but this way we can start auto-verifying game files. Let's page 2 know we're ready.
+            infoCorrect = true;
+
+
+            //Bring next panel to front
+            if (pageIndex < listPanel.Count - 1)
+            {
+                listPanel[++pageIndex].BringToFront();
+                listPanel[pageIndex].Location = new Point(0, 0);
+
+                // Begin the backgroundworker on verifying game files
+                bgwVerifyVanillaFiles.RunWorkerAsync();
+            }
+        }
+
+        private void bgwVerifyVanillaFiles_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Once again, we're not here to update the UI. That's done in bgwVerifyVanillaFiles_Completed.
+
+
+
+            // So here, we need to create OctoDiff sigs on the client computer and compare them to the ones included in the launcher.
+            
+
         }
     }
 }

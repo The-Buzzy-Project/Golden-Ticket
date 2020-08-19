@@ -34,13 +34,18 @@
             this.dontbedumbLabel = new System.Windows.Forms.Label();
             this.wrongInfoButton = new System.Windows.Forms.Button();
             this.rightInfoButton = new System.Windows.Forms.Button();
-            this.setupWindow1 = new System.Windows.Forms.Panel();
-            this.gameVerInfoLabel = new System.Windows.Forms.Label();
-            this.gameDirInfoLabel = new System.Windows.Forms.Label();
-            this.osInfoLabel = new System.Windows.Forms.Label();
+            this.setupPanel0 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.osInfoLabel = new System.Windows.Forms.Label();
+            this.gameDirInfoLabel = new System.Windows.Forms.Label();
+            this.gameVerInfoLabel = new System.Windows.Forms.Label();
             this.bgwGetNeededInfo = new System.ComponentModel.BackgroundWorker();
-            this.setupWindow1.SuspendLayout();
+            this.setupPanel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.bgwVerifyVanillaFiles = new System.ComponentModel.BackgroundWorker();
+            this.setupPanel0.SuspendLayout();
+            this.setupPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // gameverLabel
@@ -99,46 +104,35 @@
             this.rightInfoButton.TabIndex = 5;
             this.rightInfoButton.Text = "Yes";
             this.rightInfoButton.UseVisualStyleBackColor = true;
+            this.rightInfoButton.Click += new System.EventHandler(this.rightInfoButton_Click);
             // 
-            // setupWindow1
+            // setupPanel0
             // 
-            this.setupWindow1.Controls.Add(this.label1);
-            this.setupWindow1.Controls.Add(this.osInfoLabel);
-            this.setupWindow1.Controls.Add(this.gameDirInfoLabel);
-            this.setupWindow1.Controls.Add(this.gameVerInfoLabel);
-            this.setupWindow1.Controls.Add(this.gameverLabel);
-            this.setupWindow1.Controls.Add(this.rightInfoButton);
-            this.setupWindow1.Controls.Add(this.gameDirLabel);
-            this.setupWindow1.Controls.Add(this.wrongInfoButton);
-            this.setupWindow1.Controls.Add(this.osLabel);
-            this.setupWindow1.Controls.Add(this.dontbedumbLabel);
-            this.setupWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.setupWindow1.Location = new System.Drawing.Point(0, 0);
-            this.setupWindow1.Name = "setupWindow1";
-            this.setupWindow1.Size = new System.Drawing.Size(312, 313);
-            this.setupWindow1.TabIndex = 6;
+            this.setupPanel0.Controls.Add(this.label1);
+            this.setupPanel0.Controls.Add(this.osInfoLabel);
+            this.setupPanel0.Controls.Add(this.gameDirInfoLabel);
+            this.setupPanel0.Controls.Add(this.gameVerInfoLabel);
+            this.setupPanel0.Controls.Add(this.gameverLabel);
+            this.setupPanel0.Controls.Add(this.rightInfoButton);
+            this.setupPanel0.Controls.Add(this.gameDirLabel);
+            this.setupPanel0.Controls.Add(this.wrongInfoButton);
+            this.setupPanel0.Controls.Add(this.osLabel);
+            this.setupPanel0.Controls.Add(this.dontbedumbLabel);
+            this.setupPanel0.Location = new System.Drawing.Point(0, 0);
+            this.setupPanel0.Name = "setupPanel0";
+            this.setupPanel0.Size = new System.Drawing.Size(312, 313);
+            this.setupPanel0.TabIndex = 6;
             // 
-            // gameVerInfoLabel
+            // label1
             // 
-            this.gameVerInfoLabel.AutoSize = true;
-            this.gameVerInfoLabel.Location = new System.Drawing.Point(56, 86);
-            this.gameVerInfoLabel.MinimumSize = new System.Drawing.Size(200, 0);
-            this.gameVerInfoLabel.Name = "gameVerInfoLabel";
-            this.gameVerInfoLabel.Size = new System.Drawing.Size(200, 13);
-            this.gameVerInfoLabel.TabIndex = 6;
-            this.gameVerInfoLabel.Text = "Please wait...";
-            this.gameVerInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // gameDirInfoLabel
-            // 
-            this.gameDirInfoLabel.AutoSize = true;
-            this.gameDirInfoLabel.Location = new System.Drawing.Point(56, 150);
-            this.gameDirInfoLabel.MinimumSize = new System.Drawing.Size(200, 0);
-            this.gameDirInfoLabel.Name = "gameDirInfoLabel";
-            this.gameDirInfoLabel.Size = new System.Drawing.Size(200, 13);
-            this.gameDirInfoLabel.TabIndex = 7;
-            this.gameDirInfoLabel.Text = "Please wait...";
-            this.gameDirInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.MaximumSize = new System.Drawing.Size(300, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(294, 26);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Hi! Before the game can be patched, we need to verify some info.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // osInfoLabel
             // 
@@ -151,16 +145,27 @@
             this.osInfoLabel.Text = "Please wait...";
             this.osInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // gameDirInfoLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.MaximumSize = new System.Drawing.Size(300, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(297, 26);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Hi! Before the game can be patched, we need to verify some info.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gameDirInfoLabel.AutoSize = true;
+            this.gameDirInfoLabel.Location = new System.Drawing.Point(56, 150);
+            this.gameDirInfoLabel.MinimumSize = new System.Drawing.Size(200, 0);
+            this.gameDirInfoLabel.Name = "gameDirInfoLabel";
+            this.gameDirInfoLabel.Size = new System.Drawing.Size(200, 13);
+            this.gameDirInfoLabel.TabIndex = 7;
+            this.gameDirInfoLabel.Text = "Please wait...";
+            this.gameDirInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // gameVerInfoLabel
+            // 
+            this.gameVerInfoLabel.AutoSize = true;
+            this.gameVerInfoLabel.Location = new System.Drawing.Point(56, 86);
+            this.gameVerInfoLabel.MinimumSize = new System.Drawing.Size(200, 0);
+            this.gameVerInfoLabel.Name = "gameVerInfoLabel";
+            this.gameVerInfoLabel.Size = new System.Drawing.Size(200, 13);
+            this.gameVerInfoLabel.TabIndex = 6;
+            this.gameVerInfoLabel.Text = "Please wait...";
+            this.gameVerInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // bgwGetNeededInfo
             // 
@@ -168,19 +173,56 @@
             this.bgwGetNeededInfo.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetNeededInfo_DoWork);
             this.bgwGetNeededInfo.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetNeededInfo_RunWorkerCompleted);
             // 
+            // setupPanel1
+            // 
+            this.setupPanel1.Controls.Add(this.progressBar1);
+            this.setupPanel1.Controls.Add(this.label2);
+            this.setupPanel1.Location = new System.Drawing.Point(318, 0);
+            this.setupPanel1.Name = "setupPanel1";
+            this.setupPanel1.Size = new System.Drawing.Size(312, 313);
+            this.setupPanel1.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(33, 130);
+            this.label2.MaximumSize = new System.Drawing.Size(300, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(247, 52);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Great! Let\'s go ahead and verify you have a vanilla (unmodified) game installatio" +
+    "n.\r\n\r\nThis may take a minute.";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(3, 290);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(306, 11);
+            this.progressBar1.TabIndex = 1;
+            // 
+            // bgwVerifyVanillaFiles
+            // 
+            this.bgwVerifyVanillaFiles.WorkerReportsProgress = true;
+            this.bgwVerifyVanillaFiles.WorkerSupportsCancellation = true;
+            this.bgwVerifyVanillaFiles.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwVerifyVanillaFiles_DoWork);
+            // 
             // PatcherWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(312, 313);
-            this.Controls.Add(this.setupWindow1);
+            this.ClientSize = new System.Drawing.Size(849, 530);
+            this.Controls.Add(this.setupPanel1);
+            this.Controls.Add(this.setupPanel0);
             this.Name = "PatcherWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Golden Ticket -Patching";
             this.Load += new System.EventHandler(this.PatcherWindow_Load);
             this.Shown += new System.EventHandler(this.PatcherWindow_Shown);
-            this.setupWindow1.ResumeLayout(false);
-            this.setupWindow1.PerformLayout();
+            this.setupPanel0.ResumeLayout(false);
+            this.setupPanel0.PerformLayout();
+            this.setupPanel1.ResumeLayout(false);
+            this.setupPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -193,11 +235,15 @@
         private System.Windows.Forms.Label dontbedumbLabel;
         private System.Windows.Forms.Button wrongInfoButton;
         private System.Windows.Forms.Button rightInfoButton;
-        private System.Windows.Forms.Panel setupWindow1;
+        private System.Windows.Forms.Panel setupPanel0;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label osInfoLabel;
         private System.Windows.Forms.Label gameDirInfoLabel;
         private System.Windows.Forms.Label gameVerInfoLabel;
         private System.ComponentModel.BackgroundWorker bgwGetNeededInfo;
+        private System.Windows.Forms.Panel setupPanel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.ComponentModel.BackgroundWorker bgwVerifyVanillaFiles;
     }
 }
